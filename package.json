@@ -1,0 +1,51 @@
+{
+  "name": "skeleton-styler",
+  "description": "A lightweight TypeScript library to generate skeleton loading UIs with customizable styles and animations.",
+  "version": "0.1.13",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "pub": "npm publish --access public"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.2",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-lib-inject-css": "^2.2.2"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
+  },
+  "keywords": [
+    "skeleton",
+    "loading",
+    "ui",
+    "typescript",
+    "css",
+    "shimmer",
+    "placeholder",
+    "animation",
+    "react",
+    "vue",
+    "angular",
+    "frontend"
+  ],
+  "license": "MIT",
+  "author": "Hoai Nam"
+}

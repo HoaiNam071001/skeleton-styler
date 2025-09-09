@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <div id="app" style="margin: 400px"></div>
+    <!-- <script type="module" src="/src/main.ts"></script> -->
+    <script type="module">
+      import {
+        ElementBuilder,
+        SkeletonAnimation,
+      } from "./dist/skeleton-styler.es.js";
+
+      const app = document.getElementById("app");
+      const skeletonCard = new ElementBuilder()
+        .setClass("card")
+        .s_flex()
+        .s_itemsCenter()
+        .s_gap("12px")
+        .append(
+          new ElementBuilder()
+            .s_w("50px")
+            .s_h("50px")
+            .s_rounded("50%")
+            .markAsSkeleton(SkeletonAnimation.Pulse),
+          new ElementBuilder()
+            .s_flexColumn()
+            .s_gap("8px")
+            .append(
+              new ElementBuilder()
+                .s_w("180px")
+                .s_h("14px")
+                .markAsSkeleton(SkeletonAnimation.Progress),
+              new ElementBuilder()
+                .s_w("120px")
+                .s_h("16px")
+                .markAsSkeleton(SkeletonAnimation.Progress)
+            )
+        );
+
+      app?.appendChild(skeletonCard.generate());
+    </script>
+  </body>
+</html>
