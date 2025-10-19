@@ -6,7 +6,7 @@ Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
 ---
 ## Demo
 
-![Demo](./demo.gif)
+![Demo](https://github.com/HoaiNam071001/skeleton-styler/blob/main/demo.gif)
 
 ---
 

@@ -1,8 +1,12 @@
 {
   "name": "skeleton-styler",
   "description": "A lightweight TypeScript library to generate skeleton loading UIs with customizable styles and animations.",
-  "version": "2.1.1",
+  "version": "2.2.1",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HoaiNam071001/skeleton-styler"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
