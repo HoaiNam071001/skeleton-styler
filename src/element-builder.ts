@@ -15,8 +15,8 @@ export enum SkeletonAnimation {
 
 const DEFAULT_GLOBAL_ANIMATION: SkeletonAnimation = SkeletonAnimation.Pulse;
 const DEFAULT_GLOBAL_COLORS: string[] = [
-  "var(--sg-skeleton)",
-  "var(--sg-skeleton-light)",
+  "#e3e3e3",
+  "#fbfbfb",
 ];
 const DEFAULT_KEYFRAME_CONTENTS: Record<SkeletonAnimation, string> = {
   [SkeletonAnimation.Progress]: `
@@ -41,6 +41,36 @@ const DEFAULT_KEYFRAME_CONTENTS: Record<SkeletonAnimation, string> = {
     `,
   [SkeletonAnimation.None]: ``,
 };
+
+export interface SkeletonNode {
+  /** Thẻ HTML (ví dụ: 'div', 'span'). Mặc định là 'div'. */
+  tag?: string;
+  /** Số lượng phần tử này sẽ được tạo. Mặc định là 1. */
+  count?: number;
+  /** Tên lớp CSS để áp dụng. */
+  className?: string;
+  /** CSS tùy chỉnh để thêm vào thẻ <style> gốc. */
+  globalStyle?: string;
+
+  /** * Đánh dấu là skeleton.
+   * - `true`: Sử dụng animation toàn cục.
+   * - `SkeletonAnimation.Wave`: Sử dụng animation cụ thể.
+   */
+  skeleton?: boolean | SkeletonAnimation;
+  /** Ghi đè animation cho phần tử này. */
+  animation?: SkeletonAnimation;
+  /** Ghi đè màu sắc cho phần tử này. */
+  colors?: string[];
+
+  /** * Một đối tượng chứa các thuộc tính CSS.
+   * Các khóa camelCase (ví dụ: 'fontSize') sẽ được chuyển thành kebab-case ('font-size').
+   * Các giá trị số sẽ tự động được chuyển thành 'px'.
+   */
+  style?: Record<string, string | number>;
+
+  /** Một mảng các đối tượng SkeletonNode con. */
+  children?: SkeletonNode[];
+}
 
 /**
  * An interface for configuring global skeleton properties.
@@ -140,6 +170,43 @@ export class ElementBuilder extends StyleBuilder {
       animation: this.getAnimation(),
       colors: this.getColors(),
     };
+  }
+
+  static fromJSON(obj: SkeletonNode): ElementBuilder {
+    const builder = new ElementBuilder();
+    if (obj.tag) builder.setTagName(obj.tag);
+    if (obj.count) builder.setCount(obj.count);
+    if (obj.className) builder.setClass(obj.className);
+    if (obj.globalStyle) builder.setGlobalStyle(obj.globalStyle);
+
+    if (obj.skeleton) {
+      const anim = typeof obj.skeleton === "string" ? obj.skeleton : undefined;
+      builder.markAsSkeleton(anim);
+    }
+    if (obj.animation) builder.setAnimation(obj.animation);
+    if (obj.colors) builder.setSkeletonColors(obj.colors);
+
+    if (obj.style) {
+      for (const key in obj.style) {
+        if (Object.prototype.hasOwnProperty.call(obj.style, key)) {
+          const cssKey = key.replace(
+            /[A-Z]/g,
+            (match) => `-${match.toLowerCase()}`
+          );
+          const value = obj.style[key];
+          builder.s_style(cssKey, ElementBuilder.fmt(value));
+        }
+      }
+    }
+
+    if (obj.children && Array.isArray(obj.children)) {
+      const childBuilders = obj.children.map((childObj) =>
+        ElementBuilder.fromJSON(childObj)
+      );
+      builder.append(...childBuilders);
+    }
+
+    return builder;
   }
 
   private tagName: string = "div";
@@ -306,6 +373,8 @@ export class ElementBuilder extends StyleBuilder {
     const colors = this.colors || params.colors || ElementBuilder.getColors();
 
     if (this.isSkeleton) {
+      const timingFunction =
+        animation === SkeletonAnimation.Progress ? "1.5s linear" : "2.5s ease";
       Object.assign(styles, {
         background:
           animation === SkeletonAnimation.Progress
@@ -321,7 +390,7 @@ export class ElementBuilder extends StyleBuilder {
         borderRadius: "4px",
         animation:
           animation !== SkeletonAnimation.None
-            ? `${animation} 2.5s ease infinite`
+            ? `${animation} ${timingFunction} infinite`
             : "none",
       });
     }

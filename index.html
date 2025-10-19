@@ -11,75 +11,80 @@
     <script src="./dist/index.umd.js"></script>
     <script>
       // Thư viện sẽ được gắn vào đối tượng window với tên là SkeletonStyler
-      const { ElementBuilder, SkeletonAnimation } = SkeletonStyler;
+      const { ElementBuilder, SkeletonAnimation, SkeletonNode } =
+        SkeletonStyler;
       // Tạo một ví dụ skeleton đơn giản
 
-    //   const getItemLabel = () =>
-    //     new ElementBuilder()
-    //       .s_h("44px")
-    //       .s_flex()
-    //       .s_justifyBetween()
-    //       .s_itemsCenter()
-    //       .append(
-    //         new ElementBuilder()
-    //           .s_flex()
-    //           .s_gap("1rem")
-    //           .s_itemsCenter()
-    //           .append(
-    //             new ElementBuilder()
-    //               .s_w("30px")
-    //               .s_h("30px")
-    //               .s_rounded("50%")
-    //               .markAsSkeleton(SkeletonAnimation.Pulse),
-    //             new ElementBuilder().s_h("14px").s_w("100px").markAsSkeleton()
-    //           )
-    //       );
+      //   const getItemLabel = () =>
+      //     new ElementBuilder()
+      //       .s_h("44px")
+      //       .s_flex()
+      //       .s_justifyBetween()
+      //       .s_itemsCenter()
+      //       .append(
+      //         new ElementBuilder()
+      //           .s_flex()
+      //           .s_gap("1rem")
+      //           .s_itemsCenter()
+      //           .append(
+      //             new ElementBuilder()
+      //               .s_w("30px")
+      //               .s_h("30px")
+      //               .s_rounded("50%")
+      //               .markAsSkeleton(SkeletonAnimation.Pulse),
+      //             new ElementBuilder().s_h("14px").s_w("100px").markAsSkeleton()
+      //           )
+      //       );
 
-    //   const leftSkeleton = new ElementBuilder().append(
-    //     new ElementBuilder()
-    //       .s_flex()
-    //       .s_flexColumn()
-    //       .s_h("80px")
-    //       .s_borderBottom("1px", "solid", "#ddd")
-    //       .s_justifyAround()
-    //       .append(
-    //         new ElementBuilder()
-    //           .s_h("32px")
-    //           .s_m("0.5rem")
-    //           .s_flex()
-    //           .s_justifyEnd()
-    //           .s_gap("0.5rem")
-    //           .append(
-    //             new ElementBuilder().s_h("32px").s_w("30px").markAsSkeleton(),
-    //             new ElementBuilder().s_h("32px").s_w("32px").markAsSkeleton()
-    //           ),
-    //         new ElementBuilder()
-    //           .s_h("26px")
-    //           .s_flex()
-    //           .s_justifyBetween()
-    //           .append(
-    //             new ElementBuilder()
-    //               .s_h("14px")
-    //               .s_w("150px")
-    //               .s_m("0 10px 0 0")
-    //               .markAsSkeleton()
-    //           )
-    //       ),
-    //     new ElementBuilder().s_mr("1rem").append(
-    //       ...Array(3)
-    //         .fill(0)
-    //         .map(() => getItemLabel().s_m("0 0 0 1rem"))
-    //     )
-    //   );
+      //   const leftSkeleton = new ElementBuilder().append(
+      //     new ElementBuilder()
+      //       .s_flex()
+      //       .s_flexColumn()
+      //       .s_h("80px")
+      //       .s_borderBottom("1px", "solid", "#ddd")
+      //       .s_justifyAround()
+      //       .append(
+      //         new ElementBuilder()
+      //           .s_h("32px")
+      //           .s_m("0.5rem")
+      //           .s_flex()
+      //           .s_justifyEnd()
+      //           .s_gap("0.5rem")
+      //           .append(
+      //             new ElementBuilder().s_h("32px").s_w("30px").markAsSkeleton(),
+      //             new ElementBuilder().s_h("32px").s_w("32px").markAsSkeleton()
+      //           ),
+      //         new ElementBuilder()
+      //           .s_h("26px")
+      //           .s_flex()
+      //           .s_justifyBetween()
+      //           .append(
+      //             new ElementBuilder()
+      //               .s_h("14px")
+      //               .s_w("150px")
+      //               .s_m("0 10px 0 0")
+      //               .markAsSkeleton()
+      //           )
+      //       ),
+      //     new ElementBuilder().s_mr("1rem").append(
+      //       ...Array(3)
+      //         .fill(0)
+      //         .map(() => getItemLabel().s_m("0 0 0 1rem"))
+      //     )
+      //   );
 
-    const parent = new ElementBuilder().setSkeletonColors(['#36a5efff', '#aaecffff']);
-    console.log('parent', parent);
+      const parent = new ElementBuilder().setSkeletonColors([
+        "#36a5efff",
+        "#aaecffff",
+      ]);
       const rightSkeleton = parent.append(
         new ElementBuilder()
           .s_h("80px")
           .s_borderBottom("1px", "solid", "#ddd")
           .s_flex()
-          .s_flexColumn().setAnimation(SkeletonAnimation.Scale).setSkeletonColors(['#f00', '#aaecffff'])
+          .s_flexColumn()
+          .setAnimation(SkeletonAnimation.Scale)
+          .setSkeletonColors(["#f00", "#aaecffff"])
           .append(
             new ElementBuilder()
               .s_m("1rem")
@@ -103,16 +108,14 @@
         )
       );
 
-      const ganttSkeleton = new ElementBuilder()
-        .s_flex()
-        .append(
+      const ganttSkeleton = new ElementBuilder().s_flex().append(
         //   leftSkeleton
         //     .s_minW("200px")
         //     .s_flexFill(1)
         //     .s_borderTop("1px", "solid", "#ddd")
         //     .s_borderRight("1px", "solid", "#ddd"),
-          rightSkeleton.s_flexFill(3).s_borderTop("1px", "solid", "#ddd")
-        );
+        rightSkeleton.s_flexFill(3).s_borderTop("1px", "solid", "#ddd")
+      );
       ElementBuilder.setConfigs({
         animation: SkeletonAnimation.Progress,
         // colors: ["#3498db", "#f1c40f"], // Màu xanh và vàng
@@ -124,8 +127,69 @@
             `,
         },
       });
-      console.log(ganttSkeleton, SkeletonAnimation, ElementBuilder);
+      const cardSkeleton = {
+        tag: "div",
+        style: {
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 16,
+          padding: 16,
+          border: "1px solid #eee",
+          borderRadius: 8,
+          width: 350,
+        },
+        children: [
+          {
+            skeleton: true,
+            style: {
+              width: 50,
+              height: 50,
+              borderRadius: 999,
+            },
+          },
+          {
+            style: {
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              flex: "1 1 auto",
+            },
+            children: [
+              {
+                skeleton: true,
+                style: {
+                  width: "80%",
+                  height: 20,
+                },
+              },
+              {
+                skeleton: true,
+                style: {
+                  width: "60%",
+                  height: 16,
+                },
+              },
+              {
+                skeleton: true,
+                style: {
+                  width: "60%",
+                  height: 16,
+                },
+              },
+            ],
+          },
+        ],
+      };
 
+      // 2. Tạo ElementBuilder từ JSON
+      const skeletonBuilder = ElementBuilder.fromJSON(cardSkeleton);
+
+      // 3. Tạo ra HTMLElement cuối cùng
+      const skeletonElement = skeletonBuilder.generate();
+
+      // 4. Thêm vào trang
+      document.body.appendChild(skeletonElement);
       // // Chèn vào trang web
       document.getElementById("app").appendChild(ganttSkeleton.generate());
     </script>

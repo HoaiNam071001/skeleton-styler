@@ -1,5 +1,6 @@
-const fmt = (v: string | number) => (typeof v === 'number' ? `${v}px` : v);
 export abstract class StyleBuilder {
+  static fmt = (v: string | number) => (typeof v === 'number' ? `${v}px` : v);
+
   private s: Record<string, string> = {};
   s_display = (v: string) => ((this.s.display = v), this);
   s_flex = () => this.s_display('flex');
@@ -35,52 +36,52 @@ export abstract class StyleBuilder {
   s_alignSelfEnd = () => this.s_alignSelf('flex-end');
   s_alignSelfCenter = () => this.s_alignSelf('center');
   s_alignSelfStretch = () => this.s_alignSelf('stretch');
-  s_gap = (v: string | number) => ((this.s.gap = fmt(v)), this);
-  s_m = (v: string | number) => ((this.s.margin = fmt(v)), this);
-  s_mt = (v: string | number) => ((this.s['margin-top'] = fmt(v)), this);
+  s_gap = (v: string | number) => ((this.s.gap = StyleBuilder.fmt(v)), this);
+  s_m = (v: string | number) => ((this.s.margin = StyleBuilder.fmt(v)), this);
+  s_mt = (v: string | number) => ((this.s['margin-top'] = StyleBuilder.fmt(v)), this);
   s_mtAuto = () => ((this.s['margin-top'] = 'auto'), this);
-  s_mb = (v: string | number) => ((this.s['margin-bottom'] = fmt(v)), this);
+  s_mb = (v: string | number) => ((this.s['margin-bottom'] = StyleBuilder.fmt(v)), this);
   s_mbAuto = () => ((this.s['margin-bottom'] = 'auto'), this);
-  s_ml = (v: string | number) => ((this.s['margin-left'] = fmt(v)), this);
+  s_ml = (v: string | number) => ((this.s['margin-left'] = StyleBuilder.fmt(v)), this);
   s_mlAuto = () => ((this.s['margin-left'] = 'auto'), this);
-  s_mr = (v: string | number) => ((this.s['margin-right'] = fmt(v)), this);
+  s_mr = (v: string | number) => ((this.s['margin-right'] = StyleBuilder.fmt(v)), this);
   s_mrAuto = () => ((this.s['margin-right'] = 'auto'), this);
   s_mx = (v: string | number) => (
-    (this.s['margin-left'] = this.s['margin-right'] = fmt(v)), this
+    (this.s['margin-left'] = this.s['margin-right'] = StyleBuilder.fmt(v)), this
   );
   s_mxAuto = () => this.s_mx('auto');
   s_my = (v: string | number) => (
-    (this.s['margin-top'] = this.s['margin-bottom'] = fmt(v)), this
+    (this.s['margin-top'] = this.s['margin-bottom'] = StyleBuilder.fmt(v)), this
   );
   s_myAuto = () => this.s_my('auto');
-  s_p = (v: string | number) => ((this.s.padding = fmt(v)), this);
-  s_pt = (v: string | number) => ((this.s['padding-top'] = fmt(v)), this);
+  s_p = (v: string | number) => ((this.s.padding = StyleBuilder.fmt(v)), this);
+  s_pt = (v: string | number) => ((this.s['padding-top'] = StyleBuilder.fmt(v)), this);
   s_ptAuto = () => this.s_pt('auto');
-  s_pb = (v: string | number) => ((this.s['padding-bottom'] = fmt(v)), this);
+  s_pb = (v: string | number) => ((this.s['padding-bottom'] = StyleBuilder.fmt(v)), this);
   s_pbAuto = () => this.s_pb('auto');
-  s_pr = (v: string | number) => ((this.s['padding-right'] = fmt(v)), this);
+  s_pr = (v: string | number) => ((this.s['padding-right'] = StyleBuilder.fmt(v)), this);
   s_prAuto = () => this.s_pr('auto');
-  s_pl = (v: string | number) => ((this.s['padding-left'] = fmt(v)), this);
+  s_pl = (v: string | number) => ((this.s['padding-left'] = StyleBuilder.fmt(v)), this);
   s_plAuto = () => this.s_pl('auto');
   s_px = (v: string | number) => (
-    (this.s['padding-left'] = this.s['padding-right'] = fmt(v)), this
+    (this.s['padding-left'] = this.s['padding-right'] = StyleBuilder.fmt(v)), this
   );
   s_pxAuto = () => this.s_px('auto');
   s_py = (v: string | number) => (
-    (this.s['padding-top'] = this.s['padding-bottom'] = fmt(v)), this
+    (this.s['padding-top'] = this.s['padding-bottom'] = StyleBuilder.fmt(v)), this
   );
   s_pyAuto = () => this.s_py('auto');
-  s_w = (v: string | number) => ((this.s.width = fmt(v)), this);
+  s_w = (v: string | number) => ((this.s.width = StyleBuilder.fmt(v)), this);
   s_wFull = () => ((this.s.width = '100%'), this);
   s_wAuto = () => ((this.s.width = 'auto'), this);
-  s_h = (v: string | number) => ((this.s.height = fmt(v)), this);
+  s_h = (v: string | number) => ((this.s.height = StyleBuilder.fmt(v)), this);
   s_hFull = () => ((this.s.height = '100%'), this);
   s_hAuto = () => ((this.s.height = 'auto'), this);
-  s_minH = (v: string | number) => ((this.s['min-height'] = fmt(v)), this);
-  s_minW = (v: string | number) => ((this.s['min-width'] = fmt(v)), this);
-  s_maxH = (v: string | number) => ((this.s['max-height'] = fmt(v)), this);
-  s_maxW = (v: string | number) => ((this.s['max-width'] = fmt(v)), this);
-  s_textSize = (s: string | number) => ((this.s['font-size'] = fmt(s)), this);
+  s_minH = (v: string | number) => ((this.s['min-height'] = StyleBuilder.fmt(v)), this);
+  s_minW = (v: string | number) => ((this.s['min-width'] = StyleBuilder.fmt(v)), this);
+  s_maxH = (v: string | number) => ((this.s['max-height'] = StyleBuilder.fmt(v)), this);
+  s_maxW = (v: string | number) => ((this.s['max-width'] = StyleBuilder.fmt(v)), this);
+  s_textSize = (s: string | number) => ((this.s['font-size'] = StyleBuilder.fmt(s)), this);
   s_textColor = (c: string) => ((this.s.color = c), this);
   s_fontWeight = (w: string | number) => (
     (this.s['font-weight'] = `${w}`), this
@@ -95,33 +96,33 @@ export abstract class StyleBuilder {
     w: string | number = '1px',
     s: string = 'solid',
     c: string = 'var(--x-border)'
-  ) => ((this.s.border = `${fmt(w)} ${s} ${c}`), this);
+  ) => ((this.s.border = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderTop = (
     w: string | number = '1px',
     s: string = 'solid',
     c: string = 'var(--x-border)'
-  ) => ((this.s['border-top'] = `${fmt(w)} ${s} ${c}`), this);
+  ) => ((this.s['border-top'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderBottom = (
     w: string | number = '1px',
     s: string = 'solid',
     c: string = 'var(--x-border)'
-  ) => ((this.s['border-bottom'] = `${fmt(w)} ${s} ${c}`), this);
+  ) => ((this.s['border-bottom'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderLeft = (
     w: string | number = '1px',
     s: string = 'solid',
     c: string = 'var(--x-border)'
-  ) => ((this.s['border-left'] = `${fmt(w)} ${s} ${c}`), this);
+  ) => ((this.s['border-left'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderRight = (
     w: string | number = '1px',
     s: string = 'solid',
     c: string = 'var(--x-border)'
-  ) => ((this.s['border-right'] = `${fmt(w)} ${s} ${c}`), this);
+  ) => ((this.s['border-right'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderX = (
     w: string | number = '1px',
     s: string = 'solid',
     c: string = 'var(--x-border)'
   ) => (
-    (this.s['border-left'] = this.s['border-right'] = `${fmt(w)} ${s} ${c}`),
+    (this.s['border-left'] = this.s['border-right'] = `${StyleBuilder.fmt(w)} ${s} ${c}`),
     this
   );
   s_borderY = (
@@ -129,11 +130,11 @@ export abstract class StyleBuilder {
     s: string = 'solid',
     c: string = 'var(--x-border)'
   ) => (
-    (this.s['border-top'] = this.s['border-bottom'] = `${fmt(w)} ${s} ${c}`),
+    (this.s['border-top'] = this.s['border-bottom'] = `${StyleBuilder.fmt(w)} ${s} ${c}`),
     this
   );
   s_rounded = (r: string | number = '4px') => (
-    (this.s['border-radius'] = fmt(r)), this
+    (this.s['border-radius'] = StyleBuilder.fmt(r)), this
   );
   s_roundedFull = () => this.s_rounded('9999px');
   s_shadow = (v: string = '0 1px 3px rgba(0,0,0,0.1)') => (
@@ -147,10 +148,10 @@ export abstract class StyleBuilder {
   s_absolute = () => this.s_position('absolute');
   s_fixed = () => this.s_position('fixed');
   s_sticky = () => this.s_position('sticky');
-  s_top = (v: string | number) => ((this.s.top = fmt(v)), this);
-  s_left = (v: string | number) => ((this.s.left = fmt(v)), this);
-  s_right = (v: string | number) => ((this.s.right = fmt(v)), this);
-  s_bottom = (v: string | number) => ((this.s.bottom = fmt(v)), this);
+  s_top = (v: string | number) => ((this.s.top = StyleBuilder.fmt(v)), this);
+  s_left = (v: string | number) => ((this.s.left = StyleBuilder.fmt(v)), this);
+  s_right = (v: string | number) => ((this.s.right = StyleBuilder.fmt(v)), this);
+  s_bottom = (v: string | number) => ((this.s.bottom = StyleBuilder.fmt(v)), this);
   s_overflow = (v: 'visible' | 'hidden' | 'scroll' | 'auto') => (
     (this.s.overflow = v), this
   );

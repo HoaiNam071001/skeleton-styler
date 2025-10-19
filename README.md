@@ -4,10 +4,13 @@ A lightweight **TypeScript library** to generate **skeleton loading UIs** with c
 Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
 
 ---
-
 ## Demo
 
-[![Demo on CodeSandbox](https://img.shields.io/badge/demo-codesandbox-blue)](https://codesandbox.io/p/devbox/6z3d87)
+![Demo](./demo.gif)
+
+---
+
+[![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/edit/stackblitz-starters-7a4xw5wa)
 
 ---
 
@@ -93,100 +96,48 @@ const skeletonCard = new ElementBuilder()
 app?.appendChild(skeletonCard.generate());
 ```
 
-### 2. React Example
+### 2. JSON Configuration Example (`fromJSON`)
 
-```tsx
-import React, { useEffect, useRef } from "react";
-import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
-
-const SkeletonCard: React.FC = () => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    ElementBuilder.setAnimation(SkeletonAnimation.Progress);
-
-    const skeletonCard = new ElementBuilder()
-      .s_flexColumn()
-      .s_w("100%")
-      .s_border("1px", "solid", "#ddd")
-      .append(
-        ...Array.from({ length: 3 }).map(() =>
-          new ElementBuilder()
-            .s_flex()
-            .s_borderBottom("1px", "solid", "#eee")
-            .append(
-              ...Array.from({ length: 3 }).map(() =>
-                new ElementBuilder()
-                  .s_flex1()
-                  .s_h("20px")
-                  .s_m("8px")
-                  .markAsSkeleton()
-              )
-            )
-        )
-      );
-
-    if (ref.current) {
-      ref.current.appendChild(skeletonCard.generate());
-    }
-  }, []);
-
-  return <div ref={ref}></div>;
-};
-
-export default SkeletonCard;
-```
-
-### 3. Angular Example
+You can define skeleton structures declaratively using JSON.
 
 ```ts
-import { Component, ElementRef, AfterViewInit } from "@angular/core";
 import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
 
-@Component({
-  selector: "app-skeleton-card",
-  template: "<div #container></div>"
-})
-export class SkeletonCardComponent implements AfterViewInit {
-  constructor(private host: ElementRef) {}
+const jsonConfig = {
+  tag: "div",
+  className: "skeleton-card",
+  skeleton: SkeletonAnimation.Progress,
+  style: { display: "flex", flexDirection: "column", width: "100%", border: "1px solid #ddd" },
+  children: [
+    {
+      tag: "div",
+      className: "avatar",
+      skeleton: true,
+      style: { width: "60px", height: "60px", borderRadius: "50%", margin: "8px" },
+    },
+    {
+      tag: "div",
+      className: "text-line",
+      skeleton: true,
+      style: { width: "80%", height: "16px", margin: "8px 0" },
+    },
+  ],
+};
 
-  ngAfterViewInit(): void {
-    ElementBuilder.setAnimation(SkeletonAnimation.Progress);
-
-    const skeletonCard = new ElementBuilder()
-      .s_flexColumn()
-      .s_w("100%")
-      .s_border("1px", "solid", "#ddd")
-      .append(
-        ...Array.from({ length: 3 }).map(() =>
-          new ElementBuilder()
-            .s_flex()
-            .s_borderBottom("1px", "solid", "#eee")
-            .append(
-              ...Array.from({ length: 3 }).map(() =>
-                new ElementBuilder()
-                  .s_flex1()
-                  .s_h("20px")
-                  .s_m("8px")
-                  .markAsSkeleton()
-              )
-            )
-        )
-      );
-
-    this.host.nativeElement.appendChild(skeletonCard.generate());
-  }
-}
+const skeleton = ElementBuilder.fromJSON(jsonConfig);
+document.body.appendChild(skeleton.generate());
 ```
+
+This allows you to build complex skeleton structures programmatically or load them dynamically from JSON data.
 
 ---
 
 ## Features
 
-- 🟦 Lightweight, no dependencies  
-- 🟪 Easy skeleton element builder  
-- 🟧 Flexible style customization  
-- ✨ Built-in animations (pulse, progress, wave, fade, scale, none)  
+* 🟦 Lightweight, no dependencies
+* 🟪 Easy skeleton element builder
+* 🟧 Flexible style customization
+* ✨ Built-in animations (pulse, progress, wave, fade, scale, none)
 - 🌍 Framework-agnostic (works with React, Vue, Angular, Vanilla JS)
 
 ---
@@ -195,16 +146,16 @@ export class SkeletonCardComponent implements AfterViewInit {
 
 You can configure global defaults using static methods of `ElementBuilder`.
 
-| Method | Description |
-|--------|-------------|
-| `setAnimation(animation: SkeletonAnimation)` | Sets the default skeleton animation type for all loaders. |
-| `getAnimation(): SkeletonAnimation` | Gets the current default skeleton animation type. |
-| `setColors(colors: string[])` | Sets the default colors for skeleton loaders. |
-| `getColors(): string[]` | Gets the current default colors. |
+| Method                                                       | Description                                                       |
+| ------------------------------------------------------------ | ----------------------------------------------------------------- |
+| `setAnimation(animation: SkeletonAnimation)`                 | Sets the default skeleton animation type for all loaders.         |
+| `getAnimation(): SkeletonAnimation`                          | Gets the current default skeleton animation type.                 |
+| `setColors(colors: string[])`                                | Sets the default colors for skeleton loaders.                     |
+| `getColors(): string[]`                                      | Gets the current default colors.                                  |
 | `setKeyframe(animation: SkeletonAnimation, content: string)` | Overrides the CSS keyframe content for a specific animation type. |
-| `getKeyframe(animation: SkeletonAnimation): string` | Gets the CSS keyframe content for a specific animation type. |
-| `setConfigs(config: GlobalConfig)` | Sets multiple global configurations at once. |
-| `getConfigs(): GlobalConfig` | Gets the current global configuration settings. |
+| `getKeyframe(animation: SkeletonAnimation): string`          | Gets the CSS keyframe content for a specific animation type.      |
+| `setConfigs(config: GlobalConfig)`                           | Sets multiple global configurations at once.                      |
+| `getConfigs(): GlobalConfig`                                 | Gets the current global configuration settings.                   |
 
 ### Example
 
@@ -223,43 +174,44 @@ console.log(ElementBuilder.getConfigs());
 
 ### `StyleBuilder`
 
-| Method | Description |
-|--------|-------------|
-| `s_display(v)` | Set display property |
-| `s_flex()` | Display flex |
-| `s_block()` | Display block |
-| `s_inline()` | Display inline |
-| `s_flexDirection(d)` | Set flex-direction |
-| `s_itemsCenter()` | Align items center |
-| `s_justifyCenter()` | Justify content center |
-| `s_gap(v)` | Set gap |
-| `s_m(v)` | Set margin |
-| `s_p(v)` | Set padding |
-| `s_w(v)` | Set width |
-| `s_h(v)` | Set height |
-| `s_textColor(c)` | Set text color |
-| `s_bg(c)` | Set background color |
-| `s_border(w, s, c)` | Set border |
-| `s_rounded(r)` | Set border-radius |
-| `s_shadow(v)` | Set box-shadow |
-| ... | ... |
+| Method               | Description            |
+| -------------------- | ---------------------- |
+| `s_display(v)`       | Set display property   |
+| `s_flex()`           | Display flex           |
+| `s_block()`          | Display block          |
+| `s_inline()`         | Display inline         |
+| `s_flexDirection(d)` | Set flex-direction     |
+| `s_itemsCenter()`    | Align items center     |
+| `s_justifyCenter()`  | Justify content center |
+| `s_gap(v)`           | Set gap                |
+| `s_m(v)`             | Set margin             |
+| `s_p(v)`             | Set padding            |
+| `s_w(v)`             | Set width              |
+| `s_h(v)`             | Set height             |
+| `s_textColor(c)`     | Set text color         |
+| `s_bg(c)`            | Set background color   |
+| `s_border(w, s, c)`  | Set border             |
+| `s_rounded(r)`       | Set border-radius      |
+| `s_shadow(v)`        | Set box-shadow         |
+| ...                  | ...                    |
 
 ### `ElementBuilder`
 
-| Method | Description |
-|--------|-------------|
-| `setTagName(tag)` | Set HTML tag |
+| Method                                       | Description                                                                        |
+| -------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `setTagName(tag)`                            | Set HTML tag                                                                       |
 | `setAnimation(animation: SkeletonAnimation)` | Sets the animation for a specific element instance, overriding the global setting. |
-| `setCount(count)` | Number of elements |
-| `setClass(name)` | Add class |
-| `setGlobalStyle(style)` | Add global CSS |
-| `markAsSkeleton(animation?)` | Mark as skeleton loader |
-| `setSkeletonColors(colors)` | Override skeleton colors |
-| `appendOne(builder)` | Append one child |
-| `appendMany(builders)` | Append multiple children |
-| `append(...children)` | Append children |
-| `getElement()` | Generate HTMLElement(s) |
-| `generate()` | Generate root HTMLElement |
+| `setCount(count)`                            | Number of elements                                                                 |
+| `setClass(name)`                             | Add class                                                                          |
+| `setGlobalStyle(style)`                      | Add global CSS                                                                     |
+| `markAsSkeleton(animation?)`                 | Mark as skeleton loader                                                            |
+| `setSkeletonColors(colors)`                  | Override skeleton colors                                                           |
+| `appendOne(builder)`                         | Append one child                                                                   |
+| `appendMany(builders)`                       | Append multiple children                                                           |
+| `append(...children)`                        | Append children                                                                    |
+| `getElement()`                               | Generate HTMLElement(s)                                                            |
+| `generate()`                                 | Generate root HTMLElement                                                          |
+| `fromJSON(config: SkeletonNode)`             | Create element(s) from JSON configuration                                          |
 
 ---
 
