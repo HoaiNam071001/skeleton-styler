@@ -30,7 +30,13 @@ yarn add skeleton-styler
 ### Basic Example
 
 ```ts
-import { ElementBuilder, StyleBuilder } from "skeleton-styler";
+import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
+
+// Configure global skeleton animation and colors
+ElementBuilder.setConfigs({
+  animation: SkeletonAnimation.Pulse,
+  colors: ["#e0e0e0", "#c0c0c0"], // The second color is used for 'Progress' animation
+});
 
 // Create a skeleton element
 const skeleton = new ElementBuilder("div")
@@ -41,12 +47,6 @@ const skeleton = new ElementBuilder("div")
   .generate();
 
 document.body.appendChild(skeleton);
-
-// Apply skeleton style
-StyleBuilder.addSkeletonStyle({
-  background: "#e0e0e0",
-  animation: "pulse 1.5s infinite"
-});
 ```
 
 This will render:
@@ -66,6 +66,9 @@ import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
 
 const app = document.getElementById("app");
 
+// Set global animation to 'Progress' for a shimmer effect
+ElementBuilder.setAnimation(SkeletonAnimation.Progress);
+
 const skeletonCard = new ElementBuilder()
   .s_flexColumn()
   .s_w("100%")
@@ -81,7 +84,7 @@ const skeletonCard = new ElementBuilder()
               .s_flex1()
               .s_h("20px")
               .s_m("8px")
-              .markAsSkeleton(SkeletonAnimation.Progress)
+              .markAsSkeleton() // Inherits the global Progress animation
           )
         )
     )
@@ -100,6 +103,8 @@ const SkeletonCard: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    ElementBuilder.setAnimation(SkeletonAnimation.Progress);
+
     const skeletonCard = new ElementBuilder()
       .s_flexColumn()
       .s_w("100%")
@@ -115,7 +120,7 @@ const SkeletonCard: React.FC = () => {
                   .s_flex1()
                   .s_h("20px")
                   .s_m("8px")
-                  .markAsSkeleton(SkeletonAnimation.Progress)
+                  .markAsSkeleton()
               )
             )
         )
@@ -146,6 +151,8 @@ export class SkeletonCardComponent implements AfterViewInit {
   constructor(private host: ElementRef) {}
 
   ngAfterViewInit(): void {
+    ElementBuilder.setAnimation(SkeletonAnimation.Progress);
+
     const skeletonCard = new ElementBuilder()
       .s_flexColumn()
       .s_w("100%")
@@ -161,31 +168,16 @@ export class SkeletonCardComponent implements AfterViewInit {
                   .s_flex1()
                   .s_h("20px")
                   .s_m("8px")
-                  .markAsSkeleton(SkeletonAnimation.Progress)
+                  .markAsSkeleton()
               )
             )
         )
       );
 
-    this.host.nativeElement
-      .querySelector("div")
-      .appendChild(skeletonCard.generate());
+    this.host.nativeElement.appendChild(skeletonCard.generate());
   }
 }
 ```
-
----
-
-### Gradient Skeleton
-
-```ts
-StyleBuilder.addSkeletonStyle({
-  colors: ["#e0e0e0", "#c0c0c0"],
-  animation: "progress 2s infinite"
-});
-```
-
-This will render a skeleton with a **shimmer effect** using gradient colors.
 
 ---
 
@@ -194,46 +186,82 @@ This will render a skeleton with a **shimmer effect** using gradient colors.
 - 🟦 Lightweight, no dependencies  
 - 🟪 Easy skeleton element builder  
 - 🟧 Flexible style customization  
-- ✨ Built-in animations (pulse, progress, shimmer, etc.)  
+- ✨ Built-in animations (pulse, progress, wave, fade, scale, none)  
 - 🌍 Framework-agnostic (works with React, Vue, Angular, Vanilla JS)
 
 ---
 
-# Skeleton Library API Reference
+## Global Configuration
 
-Below is a list of the main methods in the `ElementBuilder` and `StyleBuilder` library.
+You can configure global defaults using static methods of `ElementBuilder`.
 
-| Class | Method | Description |
-|-------|--------|-------------|
-| **StyleBuilder** | `s_display(v: string)` | Set the display property of an element |
-|  | `s_flex()` | Set display to flex |
-|  | `s_block()` | Set display to block |
-|  | `s_inline()` | Set display to inline |
-|  | `s_flexDirection(d)` | Set the flex-direction property |
-|  | `s_itemsCenter()` | Set align-items to center |
-|  | `s_justifyCenter()` | Set justify-content to center |
-|  | `s_gap(v)` | Set the gap between elements |
-|  | `s_m(v)` | Set margin |
-|  | `s_p(v)` | Set padding |
-|  | `s_w(v)` | Set width |
-|  | `s_h(v)` | Set height |
-|  | `s_textColor(c)` | Set text color |
-|  | `s_bg(c)` | Set background color |
-|  | `s_border(w, s, c)` | Set border properties |
-|  | `s_rounded(r)` | Set border-radius |
-|  | `s_shadow(v)` | Set box-shadow |
-|  | ... | ... |
-| **ElementBuilder** | `setTagName(tag: string)` | Set the HTML tag |
-|  | `setCount(count: number)` | Set the number of elements to create |
-|  | `setClass(name: string)` | Add a class to the element |
-|  | `setGlobalStyle(style: string)` | Add global styles |
-|  | `markAsSkeleton(animation)` | Mark the element as a skeleton with optional animation |
-|  | `setSkeletonColors(colors)` | Set skeleton colors |
-|  | `appendOne(builder)` | Append a single child element |
-|  | `appendMany(builders)` | Append multiple child elements |
-|  | `append(...children)` | Append given ElementBuilder children |
-|  | `getElement()` | Generate HTMLElement(s) based on configuration |
-|  | `generate()` | Generate the root HTMLElement with all children and keyframes included
+| Method | Description |
+|--------|-------------|
+| `setAnimation(animation: SkeletonAnimation)` | Sets the default skeleton animation type for all loaders. |
+| `getAnimation(): SkeletonAnimation` | Gets the current default skeleton animation type. |
+| `setColors(colors: string[])` | Sets the default colors for skeleton loaders. |
+| `getColors(): string[]` | Gets the current default colors. |
+| `setKeyframe(animation: SkeletonAnimation, content: string)` | Overrides the CSS keyframe content for a specific animation type. |
+| `getKeyframe(animation: SkeletonAnimation): string` | Gets the CSS keyframe content for a specific animation type. |
+| `setConfigs(config: GlobalConfig)` | Sets multiple global configurations at once. |
+| `getConfigs(): GlobalConfig` | Gets the current global configuration settings. |
+
+### Example
+
+```ts
+// Set global animation and colors
+ElementBuilder.setAnimation(SkeletonAnimation.Progress);
+ElementBuilder.setColors(["#ccc", "#eee"]);
+
+// Get current global config
+console.log(ElementBuilder.getConfigs());
+```
+
+---
+
+## API Reference
+
+### `StyleBuilder`
+
+| Method | Description |
+|--------|-------------|
+| `s_display(v)` | Set display property |
+| `s_flex()` | Display flex |
+| `s_block()` | Display block |
+| `s_inline()` | Display inline |
+| `s_flexDirection(d)` | Set flex-direction |
+| `s_itemsCenter()` | Align items center |
+| `s_justifyCenter()` | Justify content center |
+| `s_gap(v)` | Set gap |
+| `s_m(v)` | Set margin |
+| `s_p(v)` | Set padding |
+| `s_w(v)` | Set width |
+| `s_h(v)` | Set height |
+| `s_textColor(c)` | Set text color |
+| `s_bg(c)` | Set background color |
+| `s_border(w, s, c)` | Set border |
+| `s_rounded(r)` | Set border-radius |
+| `s_shadow(v)` | Set box-shadow |
+| ... | ... |
+
+### `ElementBuilder`
+
+| Method | Description |
+|--------|-------------|
+| `setTagName(tag)` | Set HTML tag |
+| `setAnimation(animation: SkeletonAnimation)` | Sets the animation for a specific element instance, overriding the global setting. |
+| `setCount(count)` | Number of elements |
+| `setClass(name)` | Add class |
+| `setGlobalStyle(style)` | Add global CSS |
+| `markAsSkeleton(animation?)` | Mark as skeleton loader |
+| `setSkeletonColors(colors)` | Override skeleton colors |
+| `appendOne(builder)` | Append one child |
+| `appendMany(builders)` | Append multiple children |
+| `append(...children)` | Append children |
+| `getElement()` | Generate HTMLElement(s) |
+| `generate()` | Generate root HTMLElement |
+
+---
 
 ## License
 

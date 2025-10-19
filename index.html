@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sử dụng SkeletonStyler (UMD)</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="./dist/index.umd.js"></script>
+    <script>
+      // Thư viện sẽ được gắn vào đối tượng window với tên là SkeletonStyler
+      const { ElementBuilder, SkeletonAnimation } = SkeletonStyler;
+      // Tạo một ví dụ skeleton đơn giản
+
+    //   const getItemLabel = () =>
+    //     new ElementBuilder()
+    //       .s_h("44px")
+    //       .s_flex()
+    //       .s_justifyBetween()
+    //       .s_itemsCenter()
+    //       .append(
+    //         new ElementBuilder()
+    //           .s_flex()
+    //           .s_gap("1rem")
+    //           .s_itemsCenter()
+    //           .append(
+    //             new ElementBuilder()
+    //               .s_w("30px")
+    //               .s_h("30px")
+    //               .s_rounded("50%")
+    //               .markAsSkeleton(SkeletonAnimation.Pulse),
+    //             new ElementBuilder().s_h("14px").s_w("100px").markAsSkeleton()
+    //           )
+    //       );
+
+    //   const leftSkeleton = new ElementBuilder().append(
+    //     new ElementBuilder()
+    //       .s_flex()
+    //       .s_flexColumn()
+    //       .s_h("80px")
+    //       .s_borderBottom("1px", "solid", "#ddd")
+    //       .s_justifyAround()
+    //       .append(
+    //         new ElementBuilder()
+    //           .s_h("32px")
+    //           .s_m("0.5rem")
+    //           .s_flex()
+    //           .s_justifyEnd()
+    //           .s_gap("0.5rem")
+    //           .append(
+    //             new ElementBuilder().s_h("32px").s_w("30px").markAsSkeleton(),
+    //             new ElementBuilder().s_h("32px").s_w("32px").markAsSkeleton()
+    //           ),
+    //         new ElementBuilder()
+    //           .s_h("26px")
+    //           .s_flex()
+    //           .s_justifyBetween()
+    //           .append(
+    //             new ElementBuilder()
+    //               .s_h("14px")
+    //               .s_w("150px")
+    //               .s_m("0 10px 0 0")
+    //               .markAsSkeleton()
+    //           )
+    //       ),
+    //     new ElementBuilder().s_mr("1rem").append(
+    //       ...Array(3)
+    //         .fill(0)
+    //         .map(() => getItemLabel().s_m("0 0 0 1rem"))
+    //     )
+    //   );
+
+    const parent = new ElementBuilder().setSkeletonColors(['#36a5efff', '#aaecffff']);
+    console.log('parent', parent);
+      const rightSkeleton = parent.append(
+        new ElementBuilder()
+          .s_h("80px")
+          .s_borderBottom("1px", "solid", "#ddd")
+          .s_flex()
+          .s_flexColumn().setAnimation(SkeletonAnimation.Scale).setSkeletonColors(['#f00', '#aaecffff'])
+          .append(
+            new ElementBuilder()
+              .s_m("1rem")
+              .s_h("15px")
+              .s_w("100px")
+              .markAsSkeleton()
+          ),
+        new ElementBuilder().append(
+          ...Array(3)
+            .fill(0)
+            .map(() =>
+              new ElementBuilder()
+                .s_h("44px")
+                .s_flex()
+                .s_itemsCenter()
+                .s_ml(`100px`)
+                .append(
+                  new ElementBuilder().s_h("14px").s_w(`100px`).markAsSkeleton()
+                )
+            )
+        )
+      );
+
+      const ganttSkeleton = new ElementBuilder()
+        .s_flex()
+        .append(
+        //   leftSkeleton
+        //     .s_minW("200px")
+        //     .s_flexFill(1)
+        //     .s_borderTop("1px", "solid", "#ddd")
+        //     .s_borderRight("1px", "solid", "#ddd"),
+          rightSkeleton.s_flexFill(3).s_borderTop("1px", "solid", "#ddd")
+        );
+      ElementBuilder.setConfigs({
+        animation: SkeletonAnimation.Progress,
+        // colors: ["#3498db", "#f1c40f"], // Màu xanh và vàng
+        keyframe: {
+          animation: SkeletonAnimation.Wave,
+          content: `
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(70%); }
+            `,
+        },
+      });
+      console.log(ganttSkeleton, SkeletonAnimation, ElementBuilder);
+
+      // // Chèn vào trang web
+      document.getElementById("app").appendChild(ganttSkeleton.generate());
+    </script>
+  </body>
+</html>
