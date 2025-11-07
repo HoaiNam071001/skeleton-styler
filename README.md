@@ -142,6 +142,33 @@ This allows you to build complex skeleton structures programmatically or load th
 
 ---
 
+## 🧩 SkeletonTemplate
+
+`SkeletonTemplate` provides a collection of **ready-to-use skeleton UI components** — all powered by `ElementBuilder`.  
+You can use them to create consistent, elegant loading placeholders for common interface patterns such as cards, buttons, tables, and sidebars.
+
+### Example
+
+```ts
+import { SkeletonTemplate } from "skeleton-styler";
+
+// Example: create and render a card skeleton
+const card = SkeletonTemplate.Card({ w: 320 });
+document.body.appendChild(card.generate());
+```
+
+| Method | Parameters | Description | Example |
+| ------- | ----------- | ------------ | -------- |
+| `SkeletonTemplate.Line(options?)` | `{ w?: string \| number; h?: number; count?: number; isRandomWidth?: boolean }` | Creates one or multiple skeleton lines. Supports random widths for a more natural text-like appearance. | `SkeletonTemplate.Line({ count: 3, isRandomWidth: true })` |
+| `SkeletonTemplate.Avatar(options?)` | `{ size?: number }` | Creates a circular avatar skeleton. Ideal for profile images or icons. | `SkeletonTemplate.Avatar({ size: 50 })` |
+| `SkeletonTemplate.UserAvatar(options?)` | `{ r?: number; line?: number }` | Combines an avatar and text lines — useful for user info placeholders. | `SkeletonTemplate.UserAvatar({ r: 24, line: 2 })` |
+| `SkeletonTemplate.Button(options?)` | `{ w?: string \| number; h?: number }` | Creates a button-shaped skeleton with rounded corners. | `SkeletonTemplate.Button({ w: 120, h: 40 })` |
+| `SkeletonTemplate.Card(options?)` | `{ w?: string \| number }` | Creates a card skeleton with an image (16:9) and text content block. | `SkeletonTemplate.Card({ w: 320 })` |
+| `SkeletonTemplate.Table(options?)` | `{ colW?: string \| number; colH?: number; spaceX?: number; spaceY?: number; cols?: number; rows?: number }` | Creates a table-style skeleton using `<table>`, `<tr>`, `<td>` elements. | `SkeletonTemplate.Table({ cols: 3, rows: 6 })` |
+| `SkeletonTemplate.Sidebar()` | _None_ | Creates a sidebar skeleton with a profile section, navigation items, and footer. | `SkeletonTemplate.Sidebar()` |
+
+---
+
 ## Global Configuration
 
 You can configure global defaults using static methods of `ElementBuilder`.
