@@ -42,9 +42,7 @@ ElementBuilder.setConfigs({
 });
 
 // Create a skeleton element
-const skeleton = new ElementBuilder("div")
-  .s_w("200px")
-  .s_h("20px")
+const skeleton = new ElementBuilder()
   .setClass("skeleton")
   .markAsSkeleton()
   .generate();
@@ -55,7 +53,7 @@ document.body.appendChild(skeleton);
 This will render:
 
 ```html
-<div class="skeleton" style="width:200px;height:20px;"></div>
+<div class="skeleton"></div>
 ```
 
 ---
@@ -65,38 +63,113 @@ This will render:
 ### 1. Vanilla HTML + JS
 
 ```ts
-import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
-
 const app = document.getElementById("app");
-
-// Set global animation to 'Progress' for a shimmer effect
-ElementBuilder.setAnimation(SkeletonAnimation.Progress);
-
 const skeletonCard = new ElementBuilder()
-  .s_flexColumn()
-  .s_w("100%")
-  .s_border("1px", "solid", "#ddd")
+  .s_flex()
   .append(
     ...Array.from({ length: 3 }).map(() =>
       new ElementBuilder()
-        .s_flex()
-        .s_borderBottom("1px", "solid", "#eee")
-        .append(
-          ...Array.from({ length: 3 }).map(() =>
-            new ElementBuilder()
-              .s_flex1()
-              .s_h("20px")
-              .s_m("8px")
-              .markAsSkeleton() // Inherits the global Progress animation
-          )
-        )
+        .markAsSkeleton()
     )
   );
 
 app?.appendChild(skeletonCard.generate());
 ```
 
-### 2. JSON Configuration Example (`fromJSON`)
+### 2. ReactJS
+
+```ts
+const skeletonInstance = SkeletonTemplate.UserAvatar();
+// Skeleton Wrapper Component
+interface SkeletonProps {
+  loading: boolean;
+  children: ReactNode;
+  instance: ElementBuilder;
+  className?: string;
+}
+
+const SkeletonWrapper: React.FC<SkeletonProps> = ({
+  loading,
+  children,
+  instance,
+  className,
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (loading && container) {
+      const skeleton = instance.generate();
+      container.innerHTML = "";
+      container.appendChild(skeleton);
+
+      return () => {
+        if (container.contains(skeleton)) {
+          container.removeChild(skeleton);
+        }
+      };
+    }
+  }, [loading, instance]);
+
+  if (loading) return <div ref={containerRef} className={className} />;
+  return <>{children}</>;
+};
+
+// Example usage component
+const MyComponent: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <SkeletonWrapper loading={loading} instance={skeletonInstance}>
+      <div className="user-profile">
+        <img src="/avatar.jpg" alt="User" width={48} height={48} />
+        <p>Hello!</p>
+      </div>
+    </SkeletonWrapper>
+  );
+};
+```
+
+
+### 3. Angular
+
+```ts
+// skeleton-wrapper.component.ts
+import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ElementBuilder } from 'skeleton-styler';
+
+@Component({
+  selector: 'app-skeleton-wrapper',
+  template: `<ng-content *ngIf="!loading"></ng-content>`,
+  standalone: true,
+})
+export class SkeletonWrapperComponent implements OnChanges {
+  @Input() loading = false;
+  @Input() instance!: ElementBuilder;
+  @Input() className?: string;
+
+  constructor(private elRef: ElementRef<HTMLElement>) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const container = this.elRef.nativeElement;
+
+    if (this.loading && this.instance) {
+      const skeleton = this.instance.generate();
+      container.innerHTML = '';
+      container.appendChild(skeleton);
+    } else if (!this.loading) {
+      container.innerHTML = '';
+    }
+  }
+}
+```
+
+### 4. JSON Configuration Example (`fromJSON`)
 
 You can define skeleton structures declaratively using JSON.
 
@@ -104,20 +177,14 @@ You can define skeleton structures declaratively using JSON.
 import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
 
 const jsonConfig = {
-  tag: "div",
-  className: "skeleton-card",
   skeleton: SkeletonAnimation.Progress,
-  style: { display: "flex", flexDirection: "column", width: "100%", border: "1px solid #ddd" },
+  style: { display: "flex", flexDirection: "column", width: "100%" },
   children: [
     {
-      tag: "div",
-      className: "avatar",
       skeleton: true,
       style: { width: "60px", height: "60px", borderRadius: "50%", margin: "8px" },
     },
     {
-      tag: "div",
-      className: "text-line",
       skeleton: true,
       style: { width: "80%", height: "16px", margin: "8px 0" },
     },
