@@ -4,6 +4,16 @@ A lightweight **TypeScript library** to generate **skeleton loading UIs** with c
 Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
 
 ---
+
+## Quick Navigation
+
+- [🔹 Vanilla JS Example](#1-vanilla-html--js)
+- [🔸 React Example](#2-reactjs)
+- [🟢 Angular Example](#3-angular)
+- [🧩 JSON Configuration Example](#4-json-configuration-example-fromjson)
+
+---
+
 ## Demo
 
 ![Demo](https://github.com/HoaiNam071001/skeleton-styler/blob/main/demo-1.gif)
@@ -61,6 +71,7 @@ This will render:
 ## Example Usage
 
 ### 1. Vanilla HTML + JS
+*(Jump: [React](#2-reactjs) • [Angular](#3-angular) • [JSON](#4-json-configuration-example-fromjson))*
 
 ```ts
 const app = document.getElementById("app");
@@ -76,11 +87,17 @@ const skeletonCard = new ElementBuilder()
 app?.appendChild(skeletonCard.generate());
 ```
 
-### 2. ReactJS
+---
 
-```ts
-const skeletonInstance = SkeletonTemplate.UserAvatar();
-// Skeleton Wrapper Component
+### 2. ReactJS
+*(Jump: [Top](#quick-navigation) • [Angular](#3-angular))*
+
+```tsx
+import React, { useState, useEffect, useRef, ReactNode } from "react";
+import { SkeletonTemplate, ElementBuilder } from "skeleton-styler";
+
+const skeletonInstance = SkeletonTemplate.UserAvatar({ r: 24, line: 2 });
+
 interface SkeletonProps {
   loading: boolean;
   children: ReactNode;
@@ -102,12 +119,7 @@ const SkeletonWrapper: React.FC<SkeletonProps> = ({
       const skeleton = instance.generate();
       container.innerHTML = "";
       container.appendChild(skeleton);
-
-      return () => {
-        if (container.contains(skeleton)) {
-          container.removeChild(skeleton);
-        }
-      };
+      return () => container.contains(skeleton) && container.removeChild(skeleton);
     }
   }, [loading, instance]);
 
@@ -115,8 +127,7 @@ const SkeletonWrapper: React.FC<SkeletonProps> = ({
   return <>{children}</>;
 };
 
-// Example usage component
-const MyComponent: React.FC = () => {
+export const MyComponent: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -135,8 +146,10 @@ const MyComponent: React.FC = () => {
 };
 ```
 
+---
 
 ### 3. Angular
+*(Jump: [Top](#quick-navigation) • [React](#2-reactjs))*
 
 ```ts
 // skeleton-wrapper.component.ts
@@ -157,21 +170,53 @@ export class SkeletonWrapperComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const container = this.elRef.nativeElement;
-
     if (this.loading && this.instance) {
       const skeleton = this.instance.generate();
       container.innerHTML = '';
       container.appendChild(skeleton);
-    } else if (!this.loading) {
+    } else {
       container.innerHTML = '';
     }
   }
 }
 ```
 
-### 4. JSON Configuration Example (`fromJSON`)
+Example usage:
 
-You can define skeleton structures declaratively using JSON.
+```ts
+// app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { SkeletonTemplate } from 'skeleton-styler';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <app-skeleton-wrapper
+      [loading]="loading"
+      [instance]="skeletonInstance">
+      <div class="profile">
+        <img src="avatar.png" width="48" height="48" alt="User" />
+        <p>Hello Angular!</p>
+      </div>
+    </app-skeleton-wrapper>
+  `,
+  standalone: true,
+  imports: [],
+})
+export class AppComponent implements OnInit {
+  loading = true;
+  skeletonInstance = SkeletonTemplate.UserAvatar({ r: 24, line: 2 });
+
+  ngOnInit() {
+    setTimeout(() => (this.loading = false), 3000);
+  }
+}
+```
+
+---
+
+### 4. JSON Configuration Example (`fromJSON`)
+*(Jump: [Top](#quick-navigation))*
 
 ```ts
 import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
@@ -194,18 +239,6 @@ const jsonConfig = {
 const skeleton = ElementBuilder.fromJSON(jsonConfig);
 document.body.appendChild(skeleton.generate());
 ```
-
-This allows you to build complex skeleton structures programmatically or load them dynamically from JSON data.
-
----
-
-## Features
-
-* 🟦 Lightweight, no dependencies
-* 🟪 Easy skeleton element builder
-* 🟧 Flexible style customization
-* ✨ Built-in animations (pulse, progress, wave, fade, scale, none)
-- 🌍 Framework-agnostic (works with React, Vue, Angular, Vanilla JS)
 
 ---
 
