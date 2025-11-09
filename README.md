@@ -257,19 +257,19 @@ const card = SkeletonTemplate.Card({ w: 320 });
 document.body.appendChild(card.generate());
 ```
 
-| Method | Description |
-| ------- | ------------ |
-| `SkeletonTemplate.Line(options?)` | Creates one or multiple skeleton lines. Supports random widths for natural text-like appearance. |
-| `SkeletonTemplate.Avatar(options?)` | Creates a circular avatar skeleton, ideal for profile images or icons. |
-| `SkeletonTemplate.UserAvatar(options?)` | Combines an avatar and text lines — useful for user info placeholders. |
-| `SkeletonTemplate.Button(options?)` | Creates a rounded button-shaped skeleton. |
-| `SkeletonTemplate.Card(options?)` | Creates a card skeleton with an image (16:9) and text content block. |
-| `SkeletonTemplate.Table(options?)` | Creates a table-style skeleton using `<table>`, `<tr>`, `<td>` elements. |
-| `SkeletonTemplate.Sidebar()` | Creates a sidebar skeleton with a profile section, navigation items, and footer. |
-| `SkeletonTemplate.Loading.DotLoading(options?)` | A 3-dot animated loader using radial gradients for smooth motion. |
-| `SkeletonTemplate.Loading.ClipLoader(options?)` | A circular “clip-path” loader that rotates continuously. |
-| `SkeletonTemplate.Loading.MaskedSpinner(options?)` | A conic masked spinner with smooth infinite rotation. |
-| `SkeletonTemplate.Loading.LegacySpinner(options?)` | A classic 8-dot rotating loader with customizable size and duration. |
+### Available Methods
+
+- **`SkeletonTemplate.Line(options?)`** — Creates one or multiple skeleton lines. Supports random widths for natural text-like appearance.  
+- **`SkeletonTemplate.Avatar(options?)`** — Creates a circular avatar skeleton, ideal for profile images or icons.  
+- **`SkeletonTemplate.UserAvatar(options?)`** — Combines an avatar and text lines — useful for user info placeholders.  
+- **`SkeletonTemplate.Button(options?)`** — Creates a rounded button-shaped skeleton.  
+- **`SkeletonTemplate.Card(options?)`** — Creates a card skeleton with an image (16:9) and text content block.  
+- **`SkeletonTemplate.Table(options?)`** — Creates a table-style skeleton using `<table>`, `<tr>`, `<td>` elements.  
+- **`SkeletonTemplate.Sidebar()`** — Creates a sidebar skeleton with a profile section, navigation items, and footer.  
+- **`SkeletonTemplate.Loading.DotLoading(options?)`** — A 3-dot animated loader using radial gradients for smooth motion.  
+- **`SkeletonTemplate.Loading.ClipLoader(options?)`** — A circular “clip-path” loader that rotates continuously.  
+- **`SkeletonTemplate.Loading.MaskedSpinner(options?)`** — A conic masked spinner with smooth infinite rotation.  
+- **`SkeletonTemplate.Loading.LegacySpinner(options?)`** — A classic 8-dot rotating loader with customizable size and duration.  
 
 ## Global Configuration
 
