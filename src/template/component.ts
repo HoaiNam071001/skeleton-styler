@@ -1,4 +1,4 @@
-import { ElementBuilder } from "./element-builder";
+import { ElementBuilder } from "../element-builder";
 
 const SkeletonLineDefault = {
   w: "100%",
@@ -143,7 +143,7 @@ export const SkeletonButton = (
  * @param w - The width of the card (default: 300)
  */
 export const SkeletonCard = (
-  { w = 300 }: { w?: string | number } = { w: 300 }
+  { w = 300  }: { w?: string | number } = { w: 300 }
 ) => {
   // 1. Image placeholder (aspect ratio 16:9)
   const image = new ElementBuilder()
@@ -172,7 +172,6 @@ export const SkeletonCard = (
     .s_overflowHidden() // Ensure image corners are rounded
     .append(image, content);
 };
-
 
 interface SkeletonTableParams {
   colW?: string | number; // <-- Đã thay đổi: không còn là mảng
@@ -225,31 +224,31 @@ export const SkeletonTable = (
   } as SkeletonTableParams;
 
   const table = new ElementBuilder()
-  .setClass('table-skeleton')
-  .s_w('100%')
-  .setTagName('table')
-  .append(
-    ...Array.from({ length: rows }).map(() =>
-      new ElementBuilder()
-        .setTagName('tr')
-        .s_w('100%')
-        .append(
-          ...Array.from({ length: cols }).map(() =>
-            new ElementBuilder()
-              .setTagName('td')
-              .s_px(spaceX)
-              .s_py(spaceY)
-              .append(
-                new ElementBuilder()
-                  .s_w(colW || '100%')
-                  .s_h(colH)
-                  .s_rounded(4)
-                  .markAsSkeleton()
-              )
+    .setClass("table-skeleton")
+    .s_w("100%")
+    .setTagName("table")
+    .append(
+      ...Array.from({ length: rows }).map(() =>
+        new ElementBuilder()
+          .setTagName("tr")
+          .s_w("100%")
+          .append(
+            ...Array.from({ length: cols }).map(() =>
+              new ElementBuilder()
+                .setTagName("td")
+                .s_px(spaceX)
+                .s_py(spaceY)
+                .append(
+                  new ElementBuilder()
+                    .s_w(colW || "100%")
+                    .s_h(colH)
+                    .s_rounded(4)
+                    .markAsSkeleton()
+                )
+            )
           )
-        )
-    )
-  );
+      )
+    );
 
   return table;
 };
@@ -301,14 +300,4 @@ export const SkeletonSidebar = () => {
           SkeletonLine({ w: "70%", h: 14, count: 1 }) // "Settings" or "Logout"
         )
     );
-};
-
-export const SkeletonTemplate = {
-  Line: SkeletonLine,
-  Avatar: SkeletonAvatar,
-  UserAvatar: SkeletonUserAvatar,
-  Button: SkeletonButton,
-  Card: SkeletonCard,
-  Table: SkeletonTable,
-  Sidebar: SkeletonSidebar,
 };

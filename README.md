@@ -257,17 +257,19 @@ const card = SkeletonTemplate.Card({ w: 320 });
 document.body.appendChild(card.generate());
 ```
 
-| Method | Parameters | Description | Example |
-| ------- | ----------- | ------------ | -------- |
-| `SkeletonTemplate.Line(options?)` | `{ w?: string \| number; h?: number; count?: number; isRandomWidth?: boolean }` | Creates one or multiple skeleton lines. Supports random widths for a more natural text-like appearance. | `SkeletonTemplate.Line({ count: 3, isRandomWidth: true })` |
-| `SkeletonTemplate.Avatar(options?)` | `{ size?: number }` | Creates a circular avatar skeleton. Ideal for profile images or icons. | `SkeletonTemplate.Avatar({ size: 50 })` |
-| `SkeletonTemplate.UserAvatar(options?)` | `{ r?: number; line?: number }` | Combines an avatar and text lines — useful for user info placeholders. | `SkeletonTemplate.UserAvatar({ r: 24, line: 2 })` |
-| `SkeletonTemplate.Button(options?)` | `{ w?: string \| number; h?: number }` | Creates a button-shaped skeleton with rounded corners. | `SkeletonTemplate.Button({ w: 120, h: 40 })` |
-| `SkeletonTemplate.Card(options?)` | `{ w?: string \| number }` | Creates a card skeleton with an image (16:9) and text content block. | `SkeletonTemplate.Card({ w: 320 })` |
-| `SkeletonTemplate.Table(options?)` | `{ colW?: string \| number; colH?: number; spaceX?: number; spaceY?: number; cols?: number; rows?: number }` | Creates a table-style skeleton using `<table>`, `<tr>`, `<td>` elements. | `SkeletonTemplate.Table({ cols: 3, rows: 6 })` |
-| `SkeletonTemplate.Sidebar()` | _None_ | Creates a sidebar skeleton with a profile section, navigation items, and footer. | `SkeletonTemplate.Sidebar()` |
-
----
+| Method | Description |
+| ------- | ------------ |
+| `SkeletonTemplate.Line(options?)` | Creates one or multiple skeleton lines. Supports random widths for natural text-like appearance. |
+| `SkeletonTemplate.Avatar(options?)` | Creates a circular avatar skeleton, ideal for profile images or icons. |
+| `SkeletonTemplate.UserAvatar(options?)` | Combines an avatar and text lines — useful for user info placeholders. |
+| `SkeletonTemplate.Button(options?)` | Creates a rounded button-shaped skeleton. |
+| `SkeletonTemplate.Card(options?)` | Creates a card skeleton with an image (16:9) and text content block. |
+| `SkeletonTemplate.Table(options?)` | Creates a table-style skeleton using `<table>`, `<tr>`, `<td>` elements. |
+| `SkeletonTemplate.Sidebar()` | Creates a sidebar skeleton with a profile section, navigation items, and footer. |
+| `SkeletonTemplate.Loading.DotLoading(options?)` | A 3-dot animated loader using radial gradients for smooth motion. |
+| `SkeletonTemplate.Loading.ClipLoader(options?)` | A circular “clip-path” loader that rotates continuously. |
+| `SkeletonTemplate.Loading.MaskedSpinner(options?)` | A conic masked spinner with smooth infinite rotation. |
+| `SkeletonTemplate.Loading.LegacySpinner(options?)` | A classic 8-dot rotating loader with customizable size and duration. |
 
 ## Global Configuration
 

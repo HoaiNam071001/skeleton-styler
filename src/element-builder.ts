@@ -14,10 +14,7 @@ export enum SkeletonAnimation {
 }
 
 const DEFAULT_GLOBAL_ANIMATION: SkeletonAnimation = SkeletonAnimation.Pulse;
-const DEFAULT_GLOBAL_COLORS: string[] = [
-  "#e3e3e3",
-  "#fbfbfb",
-];
+const DEFAULT_GLOBAL_COLORS: string[] = ["#e3e3e3", "#fbfbfb"];
 const DEFAULT_KEYFRAME_CONTENTS: Record<SkeletonAnimation, string> = {
   [SkeletonAnimation.Progress]: `
       0% { background-position: -200% 0; }
@@ -94,7 +91,6 @@ export class ElementBuilder extends StyleBuilder {
     DEFAULT_KEYFRAME_CONTENTS;
 
   // Static methods for global configuration
-
   /**
    * Sets the default skeleton animation type for all loaders.
    * @param animation The desired skeleton animation type.
@@ -354,20 +350,17 @@ export class ElementBuilder extends StyleBuilder {
 
   // ⚡️ generate elements
   /**
-   * Recursively generates an array of HTMLElements based on the builder's configuration.
-   *
-   * This is an internal method and should not be called directly.
-   * Use the public `generate()` method to render the final component.
+   * Recursively generates HTMLElements and collects stylesheets.
    *
    * @param params An object containing inherited properties from the parent element.
    * @param {SkeletonAnimation} [params.animation] The animation type inherited from the parent.
    * @param {string[]} [params.colors] The colors inherited from the parent.
-   * @returns An array of HTMLElements.
+   * @returns An object containing the generated elements and their combined stylesheet.
    */
   getElement(
     params: { animation?: SkeletonAnimation; colors?: string[] } = {}
-  ): HTMLElement[] {
-    const styles = { borderRadius: "3px", ...this.getStyle() };
+  ): { elements: HTMLElement[]; styleSheet: string } {
+    const styles = { ...this.getStyle() };
     const animation =
       this.animation || params.animation || ElementBuilder.getAnimation();
     const colors = this.colors || params.colors || ElementBuilder.getColors();
@@ -387,30 +380,40 @@ export class ElementBuilder extends StyleBuilder {
             : colors[0],
         backgroundSize:
           animation === SkeletonAnimation.Progress ? "200% 100%" : undefined,
-        borderRadius: "4px",
+        borderRadius: styles.borderRadius || styles["border-radius"] || "4px",
         animation:
           animation !== SkeletonAnimation.None
             ? `${animation} ${timingFunction} infinite`
             : "none",
       });
+      console.log("style", styles);
     }
 
-    return Array.from({ length: this.count }, () => {
+    let collectedStyleSheet = this.styleSheet ? this.styleSheet + "\n" : "";
+
+    const elements = Array.from({ length: this.count }, () => {
       const el = document.createElement(this.tagName);
       if (this.className) el.className = this.className;
       Object.assign(el.style, styles);
 
-      this.children.forEach((child) =>
-        child
-          .getElement({
-            animation: animation,
-            colors: colors,
-          })
-          .forEach((c) => el.appendChild(c))
-      );
+      this.children.forEach((child) => {
+        const childResult = child.getElement({
+          animation: animation,
+          colors: colors,
+        });
+
+        childResult.elements.forEach((c) => el.appendChild(c));
+
+        collectedStyleSheet += childResult.styleSheet;
+      });
 
       return el;
     });
+
+    return {
+      elements: elements,
+      styleSheet: collectedStyleSheet,
+    };
   }
 
   /**
@@ -423,13 +426,14 @@ export class ElementBuilder extends StyleBuilder {
     root.style.width = "100%";
     root.style.height = "100%";
 
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = ElementBuilder.getKeyframes();
+    const styleSheetEl = document.createElement("style");
+    let allStyles = ElementBuilder.getKeyframes();
+    const result = this.getElement();
+    allStyles += result.styleSheet;
+    styleSheetEl.textContent = allStyles;
+    root.appendChild(styleSheetEl);
+    result.elements.forEach((el) => root.appendChild(el));
 
-    if (this.styleSheet) styleSheet.textContent += this.styleSheet;
-    root.appendChild(styleSheet);
-
-    this.getElement().forEach((el) => root.appendChild(el));
     return root;
   }
 }

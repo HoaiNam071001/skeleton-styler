@@ -1,5 +1,6 @@
 export abstract class StyleBuilder {
   static fmt = (v: string | number) => (typeof v === 'number' ? `${v}px` : v);
+  static s_uniqId = () => `sk-id-${Math.random().toString(36).substring(2, 9)}`;
 
   private s: Record<string, string> = {};
   s_display = (v: string) => ((this.s.display = v), this);
@@ -134,7 +135,7 @@ export abstract class StyleBuilder {
     this
   );
   s_rounded = (r: string | number = '4px') => (
-    (this.s['border-radius'] = StyleBuilder.fmt(r)), this
+    (this.s['borderRadius'] = StyleBuilder.fmt(r)), this
   );
   s_roundedFull = () => this.s_rounded('9999px');
   s_shadow = (v: string = '0 1px 3px rgba(0,0,0,0.1)') => (
