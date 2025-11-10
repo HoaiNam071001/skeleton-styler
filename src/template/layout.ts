@@ -1,6 +1,13 @@
 import { ElementBuilder } from "../element-builder";
 
 /**
+ * Creates a Block container.
+ */
+export const SkeletonBlock = () => {
+  return new ElementBuilder();
+};
+
+/**
  * Creates a Flex container.
  * @param {object} params - Configuration object.
  * @param {"row" | "column"} [params.direction="row"] - The flex direction.

@@ -8,7 +8,7 @@ import {
   SkeletonSidebar,
 } from "./component";
 
-import { SkeletonFlex, SkeletonFlexCenter, SkeletonGrid } from "./layout";
+import { SkeletonBlock, SkeletonFlex, SkeletonFlexCenter, SkeletonGrid } from "./layout";
 import {
   SkeletonClipLoader,
   SkeletonDotLoading,
@@ -31,6 +31,7 @@ export const SkeletonTemplate = {
   Flex: SkeletonFlex,
   FlexCenter: SkeletonFlexCenter,
   Grid: SkeletonGrid,
+  Block: SkeletonBlock,
   Loading: {
     DotLoading: SkeletonDotLoading,
     LegacySpinner: SkeletonLegacySpinner,

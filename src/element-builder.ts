@@ -1,5 +1,6 @@
 import { StyleBuilder } from "./style-builder";
 import "./skeleton.css";
+import { SkeletonTemplate } from "./template";
 
 /**
  * Defines the available skeleton animation types.
@@ -89,6 +90,8 @@ export class ElementBuilder extends StyleBuilder {
   private static globalColors: string[] = DEFAULT_GLOBAL_COLORS;
   private static _keyframeContents: Record<SkeletonAnimation, string> =
     DEFAULT_KEYFRAME_CONTENTS;
+
+  public static template = SkeletonTemplate;
 
   // Static methods for global configuration
   /**
@@ -386,7 +389,6 @@ export class ElementBuilder extends StyleBuilder {
             ? `${animation} ${timingFunction} infinite`
             : "none",
       });
-      console.log("style", styles);
     }
 
     let collectedStyleSheet = this.styleSheet ? this.styleSheet + "\n" : "";
