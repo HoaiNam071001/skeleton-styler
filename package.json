@@ -1,7 +1,7 @@
 {
   "name": "skeleton-styler",
   "description": "A lightweight TypeScript library to generate skeleton loading UIs with customizable styles and animations.",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "type": "module",
   "repository": {
     "type": "git",
@@ -38,12 +38,13 @@
   },
   "keywords": [
     "skeleton",
+    "loader",
+    "spinner",
     "JSON",
     "loading",
     "ui",
     "typescript",
     "css",
-    "shimmer",
     "placeholder",
     "animation",
     "react",
