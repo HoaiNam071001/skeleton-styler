@@ -5,20 +5,26 @@ Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
 
 ---
 
-## Quick Navigation
+## Table of Contents
 
-- [🔹 Vanilla JS Example](#1-vanilla-html--js)
-- [🔸 React Example](#2-reactjs)
-- [🟢 Angular Example](#3-angular)
-- [🧩 JSON Configuration Example](#4-json-configuration-example-fromjson)
+- [Demo](#demo)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic Example](#basic-example)
+  - [1. Vanilla HTML + JS](#1-vanilla-html--js)
+  - [2. ReactJS](#2-reactjs)
+  - [3. Angular](#3-angular)
+  - [4. JSON Configuration Example (fromJSON)](#4-json-configuration-example-fromjson)
+- [🧩 SkeletonTemplate](#-skeletontemplate)
+- [Global Configuration](#global-configuration)
+- [API Reference](#api-reference)
+- [License](#license)
 
 ---
 
 ## Demo
 
 ![Demo](https://github.com/HoaiNam071001/skeleton-styler/blob/main/demo-1.gif)
-
----
 
 [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/edit/stackblitz-starters-7a4xw5wa)
 
@@ -45,44 +51,24 @@ yarn add skeleton-styler
 ```ts
 import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
 
-// Configure global skeleton animation and colors
 ElementBuilder.setConfigs({
   animation: SkeletonAnimation.Pulse,
-  colors: ["#e0e0e0", "#c0c0c0"], // The second color is used for 'Progress' animation
+  colors: ["#e0e0e0", "#c0c0c0"],
 });
 
-// Create a skeleton element
-const skeleton = new ElementBuilder()
-  .setClass("skeleton")
-  .markAsSkeleton()
-  .generate();
-
+const skeleton = new ElementBuilder().setClass("skeleton").markAsSkeleton().generate();
 document.body.appendChild(skeleton);
-```
-
-This will render:
-
-```html
-<div class="skeleton"></div>
 ```
 
 ---
 
-## Example Usage
-
 ### 1. Vanilla HTML + JS
-*(Jump: [React](#2-reactjs) • [Angular](#3-angular) • [JSON](#4-json-configuration-example-fromjson))*
 
 ```ts
 const app = document.getElementById("app");
 const skeletonCard = new ElementBuilder()
   .s_flex()
-  .append(
-    ...Array.from({ length: 3 }).map(() =>
-      new ElementBuilder()
-        .markAsSkeleton()
-    )
-  );
+  .append(...Array.from({ length: 3 }).map(() => new ElementBuilder().markAsSkeleton()));
 
 app?.appendChild(skeletonCard.generate());
 ```
@@ -90,54 +76,35 @@ app?.appendChild(skeletonCard.generate());
 ---
 
 ### 2. ReactJS
-*(Jump: [Top](#quick-navigation) • [Angular](#3-angular))*
 
 ```tsx
-import React, { useState, useEffect, useRef, ReactNode } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SkeletonTemplate, ElementBuilder } from "skeleton-styler";
 
 const skeletonInstance = SkeletonTemplate.UserAvatar({ r: 24, line: 2 });
 
-interface SkeletonProps {
-  loading: boolean;
-  children: ReactNode;
-  instance: ElementBuilder;
-  className?: string;
-}
-
-const SkeletonWrapper: React.FC<SkeletonProps> = ({
-  loading,
-  children,
-  instance,
-  className,
-}) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
+const SkeletonWrapper = ({ loading, children, instance }) => {
+  const ref = useRef(null);
   useEffect(() => {
-    const container = containerRef.current;
-    if (loading && container) {
+    const el = ref.current;
+    if (loading && el) {
       const skeleton = instance.generate();
-      container.innerHTML = "";
-      container.appendChild(skeleton);
-      return () => container.contains(skeleton) && container.removeChild(skeleton);
+      el.innerHTML = "";
+      el.appendChild(skeleton);
     }
-  }, [loading, instance]);
-
-  if (loading) return <div ref={containerRef} className={className} />;
-  return <>{children}</>;
+  }, [loading]);
+  return loading ? <div ref={ref} /> : children;
 };
 
-export const MyComponent: React.FC = () => {
+export const MyComponent = () => {
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3000);
     return () => clearTimeout(timer);
   }, []);
-
   return (
     <SkeletonWrapper loading={loading} instance={skeletonInstance}>
-      <div className="user-profile">
+      <div className="profile">
         <img src="/avatar.jpg" alt="User" width={48} height={48} />
         <p>Hello!</p>
       </div>
@@ -149,26 +116,23 @@ export const MyComponent: React.FC = () => {
 ---
 
 ### 3. Angular
-*(Jump: [Top](#quick-navigation) • [React](#2-reactjs))*
 
 ```ts
-// skeleton-wrapper.component.ts
 import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ElementBuilder } from 'skeleton-styler';
 
 @Component({
   selector: 'app-skeleton-wrapper',
-  template: `<ng-content *ngIf="!loading"></ng-content>`,
+  template: '<ng-content *ngIf="!loading"></ng-content>',
   standalone: true,
 })
 export class SkeletonWrapperComponent implements OnChanges {
   @Input() loading = false;
   @Input() instance!: ElementBuilder;
-  @Input() className?: string;
 
   constructor(private elRef: ElementRef<HTMLElement>) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     const container = this.elRef.nativeElement;
     if (this.loading && this.instance) {
       const skeleton = this.instance.generate();
@@ -181,42 +145,9 @@ export class SkeletonWrapperComponent implements OnChanges {
 }
 ```
 
-Example usage:
-
-```ts
-// app.component.ts
-import { Component, OnInit } from '@angular/core';
-import { SkeletonTemplate } from 'skeleton-styler';
-
-@Component({
-  selector: 'app-root',
-  template: `
-    <app-skeleton-wrapper
-      [loading]="loading"
-      [instance]="skeletonInstance">
-      <div class="profile">
-        <img src="avatar.png" width="48" height="48" alt="User" />
-        <p>Hello Angular!</p>
-      </div>
-    </app-skeleton-wrapper>
-  `,
-  standalone: true,
-  imports: [],
-})
-export class AppComponent implements OnInit {
-  loading = true;
-  skeletonInstance = SkeletonTemplate.UserAvatar({ r: 24, line: 2 });
-
-  ngOnInit() {
-    setTimeout(() => (this.loading = false), 3000);
-  }
-}
-```
-
 ---
 
-### 4. JSON Configuration Example (`fromJSON`)
-*(Jump: [Top](#quick-navigation))*
+### 4. JSON Configuration Example (fromJSON)
 
 ```ts
 import { ElementBuilder, SkeletonAnimation } from "skeleton-styler";
@@ -225,14 +156,8 @@ const jsonConfig = {
   skeleton: SkeletonAnimation.Progress,
   style: { display: "flex", flexDirection: "column", width: "100%" },
   children: [
-    {
-      skeleton: true,
-      style: { width: "60px", height: "60px", borderRadius: "50%", margin: "8px" },
-    },
-    {
-      skeleton: true,
-      style: { width: "80%", height: "16px", margin: "8px 0" },
-    },
+    { skeleton: true, style: { width: "60px", height: "60px", borderRadius: "50%", margin: "8px" } },
+    { skeleton: true, style: { width: "80%", height: "16px", margin: "8px 0" } },
   ],
 };
 
@@ -244,103 +169,76 @@ document.body.appendChild(skeleton.generate());
 
 ## 🧩 SkeletonTemplate
 
-`SkeletonTemplate` provides a collection of **ready-to-use skeleton UI components** — all powered by `ElementBuilder`.  
-You can use them to create consistent, elegant loading placeholders for common interface patterns such as cards, buttons, tables, and sidebars.
+`SkeletonTemplate` provides ready-to-use skeleton UI components — all powered by `ElementBuilder`.
 
 ### Example
 
 ```ts
 import { SkeletonTemplate } from "skeleton-styler";
 
-// Example: create and render a card skeleton
 const card = SkeletonTemplate.Card({ w: 320 });
 document.body.appendChild(card.generate());
 ```
 
-### Available Methods
+### Common Templates
 
-- **`SkeletonTemplate.Line(options?)`** — Creates one or multiple skeleton lines. Supports random widths for natural text-like appearance.  
-- **`SkeletonTemplate.Avatar(options?)`** — Creates a circular avatar skeleton, ideal for profile images or icons.  
-- **`SkeletonTemplate.UserAvatar(options?)`** — Combines an avatar and text lines — useful for user info placeholders.  
-- **`SkeletonTemplate.Button(options?)`** — Creates a rounded button-shaped skeleton.  
-- **`SkeletonTemplate.Card(options?)`** — Creates a card skeleton with an image (16:9) and text content block.  
-- **`SkeletonTemplate.Table(options?)`** — Creates a table-style skeleton using `<table>`, `<tr>`, `<td>` elements.  
-- **`SkeletonTemplate.Sidebar()`** — Creates a sidebar skeleton with a profile section, navigation items, and footer.  
-- **`SkeletonTemplate.Loading.DotLoading(options?)`** — A 3-dot animated loader using radial gradients for smooth motion.  
-- **`SkeletonTemplate.Loading.ClipLoader(options?)`** — A circular “clip-path” loader that rotates continuously.  
-- **`SkeletonTemplate.Loading.MaskedSpinner(options?)`** — A conic masked spinner with smooth infinite rotation.  
-- **`SkeletonTemplate.Loading.LegacySpinner(options?)`** — A classic 8-dot rotating loader with customizable size and duration.  
+| Method | Description |
+| ------- | ------------ |
+| `SkeletonTemplate.Line()` | Simple text line skeleton |
+| `SkeletonTemplate.Avatar()` | Circular avatar skeleton |
+| `SkeletonTemplate.UserAvatar()` | Avatar with text lines |
+| `SkeletonTemplate.Button()` | Rounded button skeleton |
+| `SkeletonTemplate.Card()` | Image + text card skeleton |
+| `SkeletonTemplate.Table()` | Table layout skeleton |
+| `SkeletonTemplate.Sidebar()` | Sidebar placeholder |
+| ... | ... |
+
+---
 
 ## Global Configuration
 
-You can configure global defaults using static methods of `ElementBuilder`.
-
-| Method                                                       | Description                                                       |
-| ------------------------------------------------------------ | ----------------------------------------------------------------- |
-| `setAnimation(animation: SkeletonAnimation)`                 | Sets the default skeleton animation type for all loaders.         |
-| `getAnimation(): SkeletonAnimation`                          | Gets the current default skeleton animation type.                 |
-| `setColors(colors: string[])`                                | Sets the default colors for skeleton loaders.                     |
-| `getColors(): string[]`                                      | Gets the current default colors.                                  |
-| `setKeyframe(animation: SkeletonAnimation, content: string)` | Overrides the CSS keyframe content for a specific animation type. |
-| `getKeyframe(animation: SkeletonAnimation): string`          | Gets the CSS keyframe content for a specific animation type.      |
-| `setConfigs(config: GlobalConfig)`                           | Sets multiple global configurations at once.                      |
-| `getConfigs(): GlobalConfig`                                 | Gets the current global configuration settings.                   |
-
-### Example
+You can set default animation and colors globally using `ElementBuilder`:
 
 ```ts
-// Set global animation and colors
 ElementBuilder.setAnimation(SkeletonAnimation.Progress);
 ElementBuilder.setColors(["#ccc", "#eee"]);
-
-// Get current global config
 console.log(ElementBuilder.getConfigs());
 ```
+
+| Method | Description |
+| ------- | ------------ |
+| `setAnimation(animation)` | Set default animation |
+| `setColors(colors)` | Set default skeleton colors |
+| `setConfigs(config)` | Apply multiple configs |
+| `getConfigs()` | Retrieve current config |
+| ... | ... |
 
 ---
 
 ## API Reference
 
-### `StyleBuilder`
+### `StyleBuilder` (commonly used)
 
-| Method               | Description            |
-| -------------------- | ---------------------- |
-| `s_display(v)`       | Set display property   |
-| `s_flex()`           | Display flex           |
-| `s_block()`          | Display block          |
-| `s_inline()`         | Display inline         |
-| `s_flexDirection(d)` | Set flex-direction     |
-| `s_itemsCenter()`    | Align items center     |
-| `s_justifyCenter()`  | Justify content center |
-| `s_gap(v)`           | Set gap                |
-| `s_m(v)`             | Set margin             |
-| `s_p(v)`             | Set padding            |
-| `s_w(v)`             | Set width              |
-| `s_h(v)`             | Set height             |
-| `s_textColor(c)`     | Set text color         |
-| `s_bg(c)`            | Set background color   |
-| `s_border(w, s, c)`  | Set border             |
-| `s_rounded(r)`       | Set border-radius      |
-| `s_shadow(v)`        | Set box-shadow         |
-| ...                  | ...                    |
+| Method | Description |
+| ------- | ------------ |
+| `s_flex()` | Display flex |
+| `s_w(v)` | Set width |
+| `s_h(v)` | Set height |
+| `s_m(v)` | Margin |
+| `s_p(v)` | Padding |
+| `s_bg(c)` | Background color |
+| ... | ... |
 
 ### `ElementBuilder`
 
-| Method                                       | Description                                                                        |
-| -------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `setTagName(tag)`                            | Set HTML tag                                                                       |
-| `setAnimation(animation: SkeletonAnimation)` | Sets the animation for a specific element instance, overriding the global setting. |
-| `setCount(count)`                            | Number of elements                                                                 |
-| `setClass(name)`                             | Add class                                                                          |
-| `setGlobalStyle(style)`                      | Add global CSS                                                                     |
-| `markAsSkeleton(animation?)`                 | Mark as skeleton loader                                                            |
-| `setSkeletonColors(colors)`                  | Override skeleton colors                                                           |
-| `appendOne(builder)`                         | Append one child                                                                   |
-| `appendMany(builders)`                       | Append multiple children                                                           |
-| `append(...children)`                        | Append children                                                                    |
-| `getElement()`                               | Generate HTMLElement(s)                                                            |
-| `generate()`                                 | Generate root HTMLElement                                                          |
-| `fromJSON(config: SkeletonNode)`             | Create element(s) from JSON configuration                                          |
+| Method | Description |
+| ------- | ------------ |
+| `setTagName(tag)` | Define HTML tag |
+| `markAsSkeleton()` | Mark element as skeleton |
+| `append(...children)` | Append child elements |
+| `generate()` | Generate HTMLElement |
+| `fromJSON(config)` | Build from JSON configuration |
+| ... | ... |
 
 ---
 
