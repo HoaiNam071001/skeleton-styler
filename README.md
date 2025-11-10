@@ -191,7 +191,6 @@ document.body.appendChild(card.generate());
 | `SkeletonTemplate.Card()` | Image + text card skeleton |
 | `SkeletonTemplate.Table()` | Table layout skeleton |
 | `SkeletonTemplate.Sidebar()` | Sidebar placeholder |
-| ... | ... |
 
 ---
 
@@ -211,7 +210,6 @@ console.log(ElementBuilder.getConfigs());
 | `setColors(colors)` | Set default skeleton colors |
 | `setConfigs(config)` | Apply multiple configs |
 | `getConfigs()` | Retrieve current config |
-| ... | ... |
 
 ---
 
@@ -227,7 +225,6 @@ console.log(ElementBuilder.getConfigs());
 | `s_m(v)` | Margin |
 | `s_p(v)` | Padding |
 | `s_bg(c)` | Background color |
-| ... | ... |
 
 ### `ElementBuilder`
 
@@ -238,7 +235,6 @@ console.log(ElementBuilder.getConfigs());
 | `append(...children)` | Append child elements |
 | `generate()` | Generate HTMLElement |
 | `fromJSON(config)` | Build from JSON configuration |
-| ... | ... |
 
 ---
 
