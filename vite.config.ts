@@ -5,18 +5,16 @@ import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 export default defineConfig({
   build: {
+    minify: false, 
+
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
-      name: "SkeletonStyler",
-      fileName: (format) =>
-        format === "es"
-          ? "index.es.js"
-          : format === "cjs"
-          ? "index.cjs"
-          : `index.${format}.js`,
+      name: "SkeletonStyler", 
+      formats: ["umd"], 
+      fileName: () => "skeleton-styler.js",
     },
     rollupOptions: {
-      external: [], // có thể thêm "vue", "react", ... nếu muốn external
+      external: [], 
     },
   },
   plugins: [
