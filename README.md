@@ -1,6 +1,10 @@
 # skeleton-styler
 
-A lightweight **TypeScript library** to generate **skeleton loading UIs** with customizable styles and animations.  
+[![Playground](https://img.shields.io/badge/Live%20Playground-Try%20Now-brightgreen?logo=vercel)](https://skeleton-styler.vercel.app/)
+[![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/edit/stackblitz-starters-7a4xw5wa)
+
+A lightweight **TypeScript library** to generate **skeleton loading UIs** with customizable styles and animations.
+
 Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
 
 ---
@@ -25,14 +29,6 @@ Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
     - [`StyleBuilder` (commonly used)](#stylebuilder-commonly-used)
     - [`ElementBuilder`](#elementbuilder)
   - [License](#license)
-
----
-
-## Demo
-
-![Demo](https://github.com/HoaiNam071001/skeleton-styler/blob/main/demo-1.gif)
-
-[![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/edit/stackblitz-starters-7a4xw5wa)
 
 ---
 
