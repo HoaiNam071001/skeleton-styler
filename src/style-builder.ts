@@ -3,6 +3,14 @@ export abstract class StyleBuilder {
   static s_uniqId = () => `sk-id-${Math.random().toString(36).substring(2, 9)}`;
 
   private s: Record<string, string> = {};
+  s_randomWidth = (min: number, max: number, unit: string = 'px') => {
+    const val = Math.floor(Math.random() * (max - min + 1)) + min;
+    return (this.s.width = `${val}${unit}`), this;
+  };
+  s_randomHeight = (min: number, max: number, unit: string = 'px') => {
+    const val = Math.floor(Math.random() * (max - min + 1)) + min;
+    return (this.s.height = `${val}${unit}`), this;
+  };
   s_display = (v: string) => ((this.s.display = v), this);
   s_flex = () => this.s_display('flex');
   s_block = () => this.s_display('block');
@@ -12,12 +20,19 @@ export abstract class StyleBuilder {
   s_grid = () => this.s_display('grid');
   s_inlineGrid = () => this.s_display('inline-grid');
   s_none = () => this.s_display('none');
+  s_gridCols = (v: string | number) => ((this.s['grid-template-columns'] = typeof v === 'number' ? `repeat(${v}, minmax(0, 1fr))` : v), this);
+  s_gridRows = (v: string | number) => ((this.s['grid-template-rows'] = typeof v === 'number' ? `repeat(${v}, minmax(0, 1fr))` : v), this);
+  s_placeItems = (v: string) => ((this.s['place-items'] = v), this);
+  s_placeContent = (v: string) => ((this.s['place-content'] = v), this);
   s_flex1 = () => ((this.s.flex = '1 1 auto'), this);
   s_flexFill = (v: number) => ((this.s.flex = `${v}`), this);
   s_flexAuto = () => ((this.s.flex = '0 1 auto'), this);
   s_flexDirection = (d: 'row' | 'column' = 'row') => (
     (this.s.display = 'flex'), (this.s['flex-direction'] = d), this
   );
+  s_flexWrap = (v: 'nowrap' | 'wrap' | 'wrap-reverse') => ((this.s['flex-wrap'] = v), this);
+  s_wrap = () => this.s_flexWrap('wrap');
+  s_nowrap = () => this.s_flexWrap('nowrap');
   s_flexRow = () => this.s_flexDirection('row');
   s_flexColumn = () => this.s_flexDirection('column');
   s_items = (v: string) => ((this.s['align-items'] = v), this);
@@ -38,6 +53,8 @@ export abstract class StyleBuilder {
   s_alignSelfCenter = () => this.s_alignSelf('center');
   s_alignSelfStretch = () => this.s_alignSelf('stretch');
   s_gap = (v: string | number) => ((this.s.gap = StyleBuilder.fmt(v)), this);
+  s_gapX = (v: string | number) => ((this.s['column-gap'] = StyleBuilder.fmt(v)), this);
+  s_gapY = (v: string | number) => ((this.s['row-gap'] = StyleBuilder.fmt(v)), this);
   s_m = (v: string | number) => ((this.s.margin = StyleBuilder.fmt(v)), this);
   s_mt = (v: string | number) => ((this.s['margin-top'] = StyleBuilder.fmt(v)), this);
   s_mtAuto = () => ((this.s['margin-top'] = 'auto'), this);
@@ -96,32 +113,32 @@ export abstract class StyleBuilder {
   s_border = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => ((this.s.border = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderTop = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => ((this.s['border-top'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderBottom = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => ((this.s['border-bottom'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderLeft = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => ((this.s['border-left'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderRight = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => ((this.s['border-right'] = `${StyleBuilder.fmt(w)} ${s} ${c}`), this);
   s_borderX = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => (
     (this.s['border-left'] = this.s['border-right'] = `${StyleBuilder.fmt(w)} ${s} ${c}`),
     this
@@ -129,7 +146,7 @@ export abstract class StyleBuilder {
   s_borderY = (
     w: string | number = '1px',
     s: string = 'solid',
-    c: string = 'var(--x-border)'
+    c: string = '#E6E6E6'
   ) => (
     (this.s['border-top'] = this.s['border-bottom'] = `${StyleBuilder.fmt(w)} ${s} ${c}`),
     this
@@ -170,6 +187,27 @@ export abstract class StyleBuilder {
     (this.s['aspect-ratio'] = typeof v === 'number' ? `${v} / 1` : v), this
   );
   s_square = () => this.s_aspectRatio('1 / 1');
+  // Text
+  s_lineHeight = (v: string | number) => ((this.s['line-height'] = typeof v === 'number' ? `${v}` : v), this); // number thường không cần px
+  s_textTransform = (v: 'uppercase' | 'lowercase' | 'capitalize' | 'none') => ((this.s['text-transform'] = v), this);
+  s_decoration = (v: string) => ((this.s['text-decoration'] = v), this);
+  s_noUnderline = () => this.s_decoration('none');
+  s_underline = () => this.s_decoration('underline');
+  s_truncate = () => (
+      (this.s['overflow'] = 'hidden'),
+      (this.s['text-overflow'] = 'ellipsis'),
+      (this.s['white-space'] = 'nowrap'),
+      this
+  );
+  // mouse
+  s_cursor = (v: string) => ((this.s.cursor = v), this);
+  s_cursorPointer = () => this.s_cursor('pointer');
+  s_cursorNotAllowed = () => this.s_cursor('not-allowed');
+
+  s_pointerEvents = (v: 'auto' | 'none') => ((this.s['pointer-events'] = v), this);
+  s_userSelect = (v: 'none' | 'text' | 'all' | 'auto') => ((this.s['user-select'] = v), this);
+  s_selectNone = () => this.s_userSelect('none');
+  //
   s_style = (k: string, v: string) => ((this.s[k] = v), this);
   s_styles = (s: Record<string, string>) => (Object.assign(this.s, s), this);
   getStyle = () => this.s;

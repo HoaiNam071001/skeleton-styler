@@ -7,18 +7,24 @@ Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
 
 ## Table of Contents
 
-- [Demo](#demo)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Basic Example](#basic-example)
-  - [1. Vanilla HTML + JS](#1-vanilla-html--js)
-  - [2. ReactJS](#2-reactjs)
-  - [3. Angular](#3-angular)
-  - [4. JSON Configuration Example (fromJSON)](#4-json-configuration-example-fromjson)
-- [🧩 SkeletonTemplate](#-skeletontemplate)
-- [Global Configuration](#global-configuration)
-- [API Reference](#api-reference)
-- [License](#license)
+- [skeleton-styler](#skeleton-styler)
+  - [Table of Contents](#table-of-contents)
+  - [Demo](#demo)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Basic Example](#basic-example)
+    - [1. Vanilla HTML + JS](#1-vanilla-html--js)
+    - [2. ReactJS](#2-reactjs)
+    - [3. Angular](#3-angular)
+    - [4. JSON Configuration Example (fromJSON)](#4-json-configuration-example-fromjson)
+  - [🧩 SkeletonTemplate](#-skeletontemplate)
+    - [Example](#example)
+    - [Common Templates](#common-templates)
+  - [Global Configuration](#global-configuration)
+  - [API Reference](#api-reference)
+    - [`StyleBuilder` (commonly used)](#stylebuilder-commonly-used)
+    - [`ElementBuilder`](#elementbuilder)
+  - [License](#license)
 
 ---
 
@@ -240,4 +246,4 @@ console.log(ElementBuilder.getConfigs());
 
 ## License
 
-MIT © 2025 Hoai Nam
+MIT © 2026 Hoai Nam

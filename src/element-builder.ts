@@ -1,5 +1,4 @@
 import { StyleBuilder } from "./style-builder";
-import "./skeleton.css";
 import { SkeletonTemplate } from "./template";
 
 /**
@@ -377,7 +376,7 @@ export class ElementBuilder extends StyleBuilder {
             ? `linear-gradient(
             90deg,
             ${colors[0]} 25%,
-            ${colors[1] || "var(--sg-skeleton-light)"} 50%,
+            ${colors[1] || "#fbfbfb"} 50%,
             ${colors[0]} 75%
           )`
             : colors[0],
