@@ -3,6 +3,7 @@
   "description": "A lightweight TypeScript library to generate skeleton loading UIs with customizable styles and animations.",
   "version": "5.0.4",
   "type": "module",
+  "homepage": "https://skeleton-styler.vercel.app",
   "main": "./dist/index.cjs",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",

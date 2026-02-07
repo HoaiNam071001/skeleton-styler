@@ -45,7 +45,7 @@
       }
       h1 { margin: 0; font-size: 1.25rem; color: #0f172a; display: flex; align-items: center; gap: 8px;}
       .badge {
-        font-size: 0.75rem; background: #e0f2fe; color: #0369a1; 
+        font-size: 0.75rem; background: #e0f2fe; color: #0369a1;
         padding: 4px 8px; border-radius: 99px; font-weight: 600;
       }
 
@@ -305,7 +305,7 @@ new ElementBuilder()
 
     <div id="toast">Copied to clipboard!</div>
 
-    <script src="./dist/skeleton-styler.js"></script>
+    <script src="./dist/index.umd.js"></script>
 
     <script>
       // 1. SETUP
@@ -347,19 +347,19 @@ new ElementBuilder()
 
         // Filter: Style Methods (s_*)
         const styleMethods = allMethods.filter(m => m.startsWith('s_'));
-        
+
         // Filter: Builder Methods (không phải s_, không phải private _, không phải constructor)
-        const builderMethods = allMethods.filter(m => 
-            !m.startsWith('s_') && 
-            !m.startsWith('_') && 
+        const builderMethods = allMethods.filter(m =>
+            !m.startsWith('s_') &&
+            !m.startsWith('_') &&
             m !== 'constructor' &&
             // Kiểm tra xem nó có phải là function không (trên instance hoặc prototype)
             (typeof dummyInstance[m] === 'function' || typeof ElementBuilder.prototype[m] === 'function')
         );
 
         // Filter: Static Methods (trực tiếp trên class ElementBuilder)
-        const staticMethods = Object.getOwnPropertyNames(ElementBuilder).filter(m => 
-            typeof ElementBuilder[m] === 'function' && 
+        const staticMethods = Object.getOwnPropertyNames(ElementBuilder).filter(m =>
+            typeof ElementBuilder[m] === 'function' &&
             !['length', 'name', 'prototype', 'fromJSON'].includes(m)
         );
 
@@ -369,14 +369,14 @@ new ElementBuilder()
             try {
                 // Lấy function thực tế để parse arguments
                 const func = isStatic ? ElementBuilder[name] : dummyInstance[name];
-                
+
                 if (func) {
                     const str = func.toString();
                     // Basic argument parsing
                     const argMatch = str.slice(str.indexOf('('), str.indexOf(')') + 1);
                     if (argMatch) args = argMatch;
-                    
-                    // Nếu bị minify thành a(b), argMatch sẽ ngắn. 
+
+                    // Nếu bị minify thành a(b), argMatch sẽ ngắn.
                     // Nếu là arrow function s_w = (v) => ..., toString() sẽ trả về (v) => ...
                     if (!str.startsWith('function') && !str.startsWith(name)) {
                          // Xử lý arrow function
@@ -425,14 +425,14 @@ new ElementBuilder()
 
         try {
             let resultElement;
-            
+
             // Hack nhẹ: Để user có thể dùng các biến global trong khung editor mà ko cần khai báo lại
             // Ta tạo một function wrapper
             const runUserCode = new Function(
-                "ElementBuilder", "SkeletonAnimation", "StyleBuilder", 
-                `return (function() { 
+                "ElementBuilder", "SkeletonAnimation", "StyleBuilder",
+                `return (function() {
                     // Support shorthand: nếu dòng đầu bắt đầu bằng . thì thêm new ElementBuilder().markAsSkeleton()
-                    ${code.startsWith('.') ? 'return new ElementBuilder().markAsSkeleton()' + code : 'return ' + code} 
+                    ${code.startsWith('.') ? 'return new ElementBuilder().markAsSkeleton()' + code : 'return ' + code}
                  })()`
             );
 
