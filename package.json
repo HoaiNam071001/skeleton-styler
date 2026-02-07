@@ -1,7 +1,7 @@
 {
   "name": "skeleton-styler",
   "description": "A lightweight TypeScript library to generate skeleton loading UIs with customizable styles and animations.",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "type": "module",
   "homepage": "https://skeleton-styler.vercel.app",
   "main": "./dist/index.cjs",
