@@ -423,7 +423,7 @@ export class ElementBuilder extends StyleBuilder {
    * @returns The root HTMLElement.
    */
   generate(): HTMLElement {
-    const root = document.createElement("div");
+    const root = document.createElement(this.tagName);
     root.style.width = "100%";
     root.style.height = "100%";
 
