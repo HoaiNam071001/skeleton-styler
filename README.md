@@ -1,19 +1,34 @@
 # skeleton-styler
 
+Zero-dependency **TypeScript Skeleton Loader Library** for React, Vue, Angular & Vanilla JavaScript.
+
+Generate fully customizable **skeleton loading UIs** with animation, JSON configuration, and framework-agnostic architecture.
+
 [![Playground](https://img.shields.io/badge/Live%20Playground-Try%20Now-brightgreen?logo=vercel)](https://skeleton-styler.vercel.app/)
 [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/edit/stackblitz-starters-7a4xw5wa)
+![npm](https://img.shields.io/npm/v/skeleton-styler)
+![downloads](https://img.shields.io/npm/dm/skeleton-styler)
+![license](https://img.shields.io/npm/l/skeleton-styler)
 
-A lightweight **TypeScript library** to generate **skeleton loading UIs** with customizable styles and animations.
+---
 
-Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
+## ✨ Why skeleton-styler?
+
+- ⚡ Zero dependency
+- 🪶 Lightweight
+- 🎨 Fully customizable styles & animations
+- 🧩 Framework agnostic (React, Vue, Angular, Next.js, plain JS)
+- 🧠 JSON-driven skeleton generation
+- 📦 TypeScript-first API
+- 🚀 Production ready
 
 ---
 
 ## Table of Contents
 
 - [skeleton-styler](#skeleton-styler)
+  - [✨ Why skeleton-styler?](#-why-skeleton-styler)
   - [Table of Contents](#table-of-contents)
-  - [Demo](#demo)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Basic Example](#basic-example)
@@ -23,11 +38,6 @@ Works with plain JavaScript, React, Vue, Angular, or any frontend framework.
     - [4. JSON Configuration Example (fromJSON)](#4-json-configuration-example-fromjson)
   - [🧩 SkeletonTemplate](#-skeletontemplate)
     - [Example](#example)
-    - [Common Templates](#common-templates)
-  - [Global Configuration](#global-configuration)
-  - [API Reference](#api-reference)
-    - [`StyleBuilder` (commonly used)](#stylebuilder-commonly-used)
-    - [`ElementBuilder`](#elementbuilder)
   - [License](#license)
 
 ---
@@ -181,62 +191,6 @@ import { SkeletonTemplate } from "skeleton-styler";
 const card = SkeletonTemplate.Card({ w: 320 });
 document.body.appendChild(card.generate());
 ```
-
-### Common Templates
-
-| Method | Description |
-| ------- | ------------ |
-| `SkeletonTemplate.Line()` | Simple text line skeleton |
-| `SkeletonTemplate.Avatar()` | Circular avatar skeleton |
-| `SkeletonTemplate.UserAvatar()` | Avatar with text lines |
-| `SkeletonTemplate.Button()` | Rounded button skeleton |
-| `SkeletonTemplate.Card()` | Image + text card skeleton |
-| `SkeletonTemplate.Table()` | Table layout skeleton |
-| `SkeletonTemplate.Sidebar()` | Sidebar placeholder |
-
----
-
-## Global Configuration
-
-You can set default animation and colors globally using `ElementBuilder`:
-
-```ts
-ElementBuilder.setAnimation(SkeletonAnimation.Progress);
-ElementBuilder.setColors(["#ccc", "#eee"]);
-console.log(ElementBuilder.getConfigs());
-```
-
-| Method | Description |
-| ------- | ------------ |
-| `setAnimation(animation)` | Set default animation |
-| `setColors(colors)` | Set default skeleton colors |
-| `setConfigs(config)` | Apply multiple configs |
-| `getConfigs()` | Retrieve current config |
-
----
-
-## API Reference
-
-### `StyleBuilder` (commonly used)
-
-| Method | Description |
-| ------- | ------------ |
-| `s_flex()` | Display flex |
-| `s_w(v)` | Set width |
-| `s_h(v)` | Set height |
-| `s_m(v)` | Margin |
-| `s_p(v)` | Padding |
-| `s_bg(c)` | Background color |
-
-### `ElementBuilder`
-
-| Method | Description |
-| ------- | ------------ |
-| `setTagName(tag)` | Define HTML tag |
-| `markAsSkeleton()` | Mark element as skeleton |
-| `append(...children)` | Append child elements |
-| `generate()` | Generate HTMLElement |
-| `fromJSON(config)` | Build from JSON configuration |
 
 ---
 
